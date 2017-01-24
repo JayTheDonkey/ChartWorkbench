@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='com.giavaneers.giavaneers'>
+  
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+  <inherits name="com.google.gwt.json.JSON" />
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='net/cloudstorage/gwt/client'/>
+  <source path='servlets/service/common'/>
+  <source path='util/common'/>
+  <source path='util/gwt'/>
+  <source path='util/logger'/>
+  <source path='util/sort'/>
+
+  <!--  GWT Compiler specify generating a single version and      -->
+  <!--  dynamically bind to particular browser variations at      -->
+  <!--  execute time (collapse-all-properties) and also link the  -->
+  <!--  single version into a single script (sso linker)          -->
+  <!-- allow Super Dev Mode -->
+  <collapse-all-properties />
+
+</module>
