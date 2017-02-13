@@ -58,8 +58,7 @@ public static final String kOPTION_X_LABEL              = "xLabel";
 public static final String kOPTION_Y_LABEL              = "yLabel";
 public static final String kOPTION_Z_LABEL              = "zLabel";
 
-public static final Map<String,String> kDEFAULT_OPTIONS =
-   Collections.unmodifiableMap(
+public static final Map<String,String> kDEFAULT_OPTIONS = Collections.unmodifiableMap(
       new HashMap<String, String>()
       {
          {
@@ -290,6 +289,24 @@ public void addChartMenuHandler(
    });
    mediaDropdownMenu.appendChild(mediaItemSurfaceChart);
 
+                                       // Graphical chart (temp)------------- //
+   Element mediaItemGraphicalChart = Document.get().createLIElement();
+   mediaItemGraphicalChart.setId("mediaItemGraphicalChart");
+   Element mediaItemGraphicalChartAnchor = Document.get().createAnchorElement();
+   mediaItemGraphicalChartAnchor.setInnerText("Graphical Chart");
+   mediaItemGraphicalChart.appendChild(mediaItemGraphicalChartAnchor);
+   Event.sinkEvents(mediaItemGraphicalChart, Event.ONCLICK);
+   DOM.setEventListener(mediaItemGraphicalChart, new EventListener()
+   {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click"))
+         {
+            assignChartOption(kCHART_SURFACE_CHART);//for now
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(mediaItemGraphicalChart);
 }
 /*------------------------------------------------------------------------------
 
