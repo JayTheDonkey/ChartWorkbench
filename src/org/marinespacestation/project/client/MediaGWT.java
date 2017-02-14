@@ -353,6 +353,31 @@ public void addMediaMenuHandler(
    });
    mediaDropdownMenu.appendChild(mediaItemWider);
 
+                                       // default size ---------------------- //
+   Element mediaItemReset = Document.get().createLIElement();
+   mediaItemReset.setId("mediaItemReset");
+   Element mediaItemResetAnchor = Document.get().createAnchorElement();
+   mediaItemResetAnchor.setInnerText("Default Size");
+   mediaItemReset.appendChild(mediaItemResetAnchor);
+   Event.sinkEvents(mediaItemReset, Event.ONCLICK);
+   DOM.setEventListener(mediaItemReset, new EventListener()
+   {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click"))
+         {
+            if (kMEDIA_POSTION_LEFT.equals(alignment)|| kMEDIA_POSTION_RIGHT.equals(alignment)){
+               widthOverride = "40%";
+            }
+            else if (kMEDIA_POSTION_MIDDLE.equals(alignment)){
+               widthOverride = "80%";
+            }
+         }
+         notifyChangeListeners(false);
+      }
+   });
+   mediaDropdownMenu.appendChild(mediaItemReset);
+
                                        // divider --------------------------- //
    divider = Document.get().createLIElement();
    divider.addClassName("divider");
