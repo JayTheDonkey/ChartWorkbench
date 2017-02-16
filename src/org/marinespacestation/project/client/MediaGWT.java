@@ -383,6 +383,26 @@ public void addMediaMenuHandler(
    divider.addClassName("divider");
    mediaDropdownMenu.appendChild(divider);
 
+                                       // reset to default ------------------ //
+   Element mediaItemResettoDefault = Document.get().createLIElement();
+   mediaItemResettoDefault.setId("mediaItemResettoDefault");
+   Element mediaItemResettoDefaultAnchor = Document.get().createAnchorElement();
+   mediaItemResettoDefaultAnchor.setInnerText("Reset to Default");
+   mediaItemResettoDefault.appendChild(mediaItemResettoDefaultAnchor);
+   Event.sinkEvents(mediaItemResettoDefault, Event.ONCLICK);
+   DOM.setEventListener(mediaItemResettoDefault, new EventListener()
+   {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click"))
+         {
+            wordPosition = kMEDIA_CONTANER_WORD_POSITION_DEFAULT;
+            assignMediaPosition(kMEDIA_POSTION_MIDDLE);
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(mediaItemResettoDefault);
+
                                        // delete ---------------------------- //
    Element mediaItemDelete = Document.get().createLIElement();
    mediaItemDelete.setId("mediaItemNewSheet");
