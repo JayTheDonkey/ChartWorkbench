@@ -302,7 +302,7 @@ public void addChartMenuHandler(
 
          if (event.getType().equalsIgnoreCase("click"))
          {
-            assignChartOption(kCHART_SURFACE_CHART);//for now
+            assignChartOption(kCHART_SCATTER_CHART);//for now
          }
       }
    });
