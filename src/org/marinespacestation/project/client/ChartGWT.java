@@ -550,7 +550,7 @@ protected static native void draw2DChartNative(
    }
 }-*/;
 
-    protected static native void drawGraphicalChart(
+    protected static native void drawGraphicalChartNative(
             String           chartContainerId,
             String           localChartData,
             String           url,
@@ -613,6 +613,39 @@ protected static native void draw2DChartNative(
         return text.replace(/&/g, '&').replace(/</g, '<')
             .replace(/>/g, '>').replace(/"/g, '"');
     }
+
+    function drawGraphicalChart(chartData)
+    {
+        var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
+        var data         = new $wnd.google.visualization.arrayToDataTable(arrayData);
+        var chartWrapper =
+            new $wnd.graphical.ChartWrapper(
+                {
+                    chartType:   chartType,
+                    containerId: chartContainerId,
+                    dataTable:   data,
+                    options:     options
+                });
+
+        // Instantiate our table object.
+        var vis = new graphical.MyTable(document.getElementById('mydiv'));
+
+        // Draw our table with the data we created locally.
+        vis.draw(data, {showLineNumber: true});
+    }
+
+}
+    if (localChartData == null)
+    {
+        $wnd.$.get(url, function(chartData)
+        {
+            drawGraphicalChart(chartData);
+        });
+    }
+    else
+    {
+        drawGraphicalChart(localChartData);
+
 
 }-*/;
 /*------------------------------------------------------------------------------
