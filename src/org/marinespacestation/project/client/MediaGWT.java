@@ -423,72 +423,7 @@ public void addMediaMenuHandler(
    mediaDropdownMenu.appendChild(mediaItemDelete);
 }
 
-public void addGraphicalMenuHandler(String mediaPanelId){
 
-   final Element mediaElem = Document.get().getElementById(mediaPanelId);
-
-   Element graphicalMenu = Document.get().createDivElement();
-   graphicalMenu.addClassName("dropdown graphical-menu");
-   mediaElem.appendChild(graphicalMenu);
-
-   Element menuButton = Document.get().createPushButtonElement();
-   menuButton.addClassName("btn btn-secondary dropdown-toggle");
-   menuButton.setPropertyString("type", "button");
-   menuButton.setPropertyString("data-toggle", "dropdown");
-   menuButton.getStyle().setMarginTop(100, Unit.PX);
-   graphicalMenu.appendChild(menuButton);
-
-   Element span = Document.get().createSpanElement();
-   span.addClassName("caret");
-   menuButton.appendChild(span);
-
-   Element mediaDropdownMenu = Document.get().createULElement();
-   mediaDropdownMenu.addClassName("dropdown-menu");
-   mediaDropdownMenu.setId(mediaPanelId + "dropdown-menu");
-   mediaDropdownMenu.getStyle().setMarginTop(0, Unit.PX);
-   graphicalMenu.appendChild(mediaDropdownMenu);
-
-                                       //-----------Correlations--------------//
-   Element mediaItemCorrelation = Document.get().createLIElement();
-   mediaItemCorrelation.setId("mediaItemCorrelation");
-   Element mediaItemCorrelationAnchor = Document.get().createAnchorElement();
-   mediaItemCorrelationAnchor.setInnerText("Correlation");
-   mediaItemCorrelation.appendChild(mediaItemCorrelationAnchor);
-   Event.sinkEvents(mediaItemCorrelation, Event.ONCLICK);
-   DOM.setEventListener(mediaItemCorrelation, new EventListener()
-   {
-      public void onBrowserEvent(Event event) {
-
-         if (event.getType().equalsIgnoreCase("click"))
-         {
-            graphicalFunctions(kMEDIA_POSTION_WIDER);//fixme
-         }
-      }
-   });
-   mediaDropdownMenu.appendChild(mediaItemCorrelation);
-                                       //------------Functions---------------//
-   Element mediaItemWider = Document.get().createLIElement();
-   mediaItemWider.setId("mediaItemWider");
-   Element mediaItemWiderAnchor = Document.get().createAnchorElement();
-   mediaItemWiderAnchor.setInnerText("Wider");
-   mediaItemWider.appendChild(mediaItemWiderAnchor);
-   Event.sinkEvents(mediaItemWider, Event.ONCLICK);
-   DOM.setEventListener(mediaItemWider, new EventListener()
-   {
-      public void onBrowserEvent(Event event) {
-
-         if (event.getType().equalsIgnoreCase("click"))
-         {
-            graphicalFunctions(kMEDIA_POSTION_WIDER);//fixme
-         }
-      }
-   });
-   mediaDropdownMenu.appendChild(mediaItemWider);
-}
-
-public void graphicalFunctions(String option){//TODO
-
-}
 /*------------------------------------------------------------------------------
 
 @name       assignMediaPosition - assign media position

@@ -24,6 +24,7 @@ package org.marinespacestation.project.client;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -303,7 +304,7 @@ public void addChartMenuHandler(
 
          if (event.getType().equalsIgnoreCase("click"))
          {
-            assignChartOption(kCHART_SCATTER_CHART);//for now
+            assignChartOption(kChart_Graphical_Chart);//for now
          }
       }
    });
@@ -425,19 +426,94 @@ public void assignChartOption(
          bChanged = true;
       }
    }
-   else if (kChart_Graphical_Chart.equals(option)){//this will never get called (for now)
+   else if (kChart_Graphical_Chart.equals(option)){
       if (!kChart_Graphical_Chart.equals(type)){
          type = kChart_Graphical_Chart;
+         graphicalMenuHandler(elementId, false);
          bChanged = true;
 
       }
    }
    if (bChanged)
    {
+      if (!kChart_Graphical_Chart.equals(type)){
+         graphicalMenuHandler(elementId, true);
+      }
+      if (type.equals(kChart_Graphical_Chart)){//for now
+         type = kCHART_SURFACE_CHART;
+      }
       notifyChangeListeners(false);
       render();
    }
 }
+
+   public void graphicalMenuHandler(String mediaPanelId, boolean remove) {
+
+      final Element mediaElem = Document.get().getElementById(mediaPanelId);
+
+      Element graphicalMenu = Document.get().createDivElement();
+      graphicalMenu.addClassName("dropdown graphical-menu");
+      mediaElem.appendChild(graphicalMenu);
+
+      Element menuButton = Document.get().createPushButtonElement();
+      menuButton.addClassName("btn btn-secondary dropdown-toggle");
+      menuButton.setPropertyString("type", "button");
+      menuButton.setPropertyString("data-toggle", "dropdown");
+      menuButton.getStyle().setMarginTop(100, Unit.PX);
+      graphicalMenu.appendChild(menuButton);
+
+      Element span = Document.get().createSpanElement();
+      span.addClassName("caret");
+      menuButton.appendChild(span);
+
+      Element mediaDropdownMenu = Document.get().createULElement();
+      mediaDropdownMenu.addClassName("dropdown-menu");
+      mediaDropdownMenu.setId(mediaPanelId + "dropdown-menu");
+      mediaDropdownMenu.getStyle().setMarginTop(0, Unit.PX);
+      graphicalMenu.appendChild(mediaDropdownMenu);
+
+      //-----------Correlations--------------//
+      Element mediaItemCorrelation = Document.get().createLIElement();
+      mediaItemCorrelation.setId("mediaItemCorrelation");
+      Element mediaItemCorrelationAnchor = Document.get().createAnchorElement();
+      mediaItemCorrelationAnchor.setInnerText("Correlation");
+      mediaItemCorrelation.appendChild(mediaItemCorrelationAnchor);
+      Event.sinkEvents(mediaItemCorrelation, Event.ONCLICK);
+      DOM.setEventListener(mediaItemCorrelation, new EventListener() {
+         public void onBrowserEvent(Event event) {
+
+            if (event.getType().equalsIgnoreCase("click")) {
+               graphicalFunctions(kMEDIA_POSTION_WIDER);//fixme
+            }
+         }
+      });
+      mediaDropdownMenu.appendChild(mediaItemCorrelation);
+
+      //------------Functions---------------//
+      Element mediaItemWider = Document.get().createLIElement();
+      mediaItemWider.setId("mediaItemWider");
+      Element mediaItemWiderAnchor = Document.get().createAnchorElement();
+      mediaItemWiderAnchor.setInnerText("Wider");
+      mediaItemWider.appendChild(mediaItemWiderAnchor);
+      Event.sinkEvents(mediaItemWider, Event.ONCLICK);
+      DOM.setEventListener(mediaItemWider, new EventListener() {
+         public void onBrowserEvent(Event event) {
+
+            if (event.getType().equalsIgnoreCase("click")) {
+               graphicalFunctions(kMEDIA_POSTION_WIDER);//fixme
+            }
+         }
+      });
+      mediaDropdownMenu.appendChild(mediaItemWider);
+
+      if (remove) {
+         removeMediaFromParent(mediaElem);
+      }
+   }
+
+   public void graphicalFunctions(String option) {//TODO
+
+   }
 /*------------------------------------------------------------------------------
 
 @name       createNativeOptions - create chart options
