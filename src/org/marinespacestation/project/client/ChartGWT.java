@@ -426,18 +426,21 @@ public void assignChartOption(
          bChanged = true;
       }
    }
-   else if (kCHART_GRAPHICAL_CHART.equals(option)){//this will never get called (for now)
-      if (!kCHART_GRAPHICAL_CHART.equals(type)){
+   else if (kCHART_GRAPHICAL_CHART.equals(option))
+   {
+      if (!kCHART_GRAPHICAL_CHART.equals(type))
+      {
          type = kCHART_GRAPHICAL_CHART;
+         graphicalMenuHandler(messageDigestSHA256Native("spreadsheet"+url));
          bChanged = true;
 
       }
    }
    if (bChanged)
    {
-      if (!kCHART_GRAPHICAL_CHART.equals(type)){
+      /*if (!kCHART_GRAPHICAL_CHART.equals(type)){
          removeGraphicalMenuHandler();
-      }
+      }*/
       if (type.equals(kCHART_GRAPHICAL_CHART)){//for now
          type = kCHART_SURFACE_CHART;
       }
@@ -913,10 +916,10 @@ public void render()
       draw3DChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
-   else if (kCHART_GRAPHICAL_CHART.equals(type)) {
+   /*else if (kCHART_GRAPHICAL_CHART.equals(type)) {
       drawGraphicalChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
-   }
+   }*/
    else
    {
       draw2DChartNative(
