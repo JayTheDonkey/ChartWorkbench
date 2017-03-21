@@ -435,10 +435,10 @@ public void assignChartOption(
    }
    if (bChanged)
    {
-      if (!kChart_Graphical_Chart.equals(type)){
+      if (!kCHART_GRAPHICAL_CHART.equals(type)){
          removeGraphicalMenuHandler();
       }
-      if (type.equals(kChart_Graphical_Chart)){//for now
+      if (type.equals(kCHART_GRAPHICAL_CHART)){//for now
          type = kCHART_SURFACE_CHART;
       }
       notifyChangeListeners(false);
