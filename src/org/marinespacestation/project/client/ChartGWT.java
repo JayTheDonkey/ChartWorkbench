@@ -44,7 +44,7 @@ public static final String kCHART_LINE_CHART            = "LineChart";
 public static final String kCHART_PIE_CHART             = "PieChart";
 public static final String kCHART_SCATTER_CHART         = "ScatterChart";
 public static final String kCHART_SURFACE_CHART         = "SurfaceChart";
-public static final String kChart_Graphical_Chart       = "GraphicalChart";
+public static final String kCHART_GRAPHICAL_CHART       = "GraphicalChart";
 
 public static final String kKEY_OPTIONS                 = "options";
 public static final String kKEY_TYPE                    = "type";
@@ -304,7 +304,7 @@ public void addChartMenuHandler(
 
          if (event.getType().equalsIgnoreCase("click"))
          {
-            assignChartOption(kChart_Graphical_Chart);//for now
+            assignChartOption(kCHART_GRAPHICAL_CHART);//for now
          }
       }
    });
@@ -426,10 +426,9 @@ public void assignChartOption(
          bChanged = true;
       }
    }
-   else if (kChart_Graphical_Chart.equals(option)){
-      if (!kChart_Graphical_Chart.equals(type)){
-         type = kChart_Graphical_Chart;
-         graphicalMenuHandler(messageDigestSHA256Native("spreadsheet"+url));
+   else if (kCHART_GRAPHICAL_CHART.equals(option)){//this will never get called (for now)
+      if (!kCHART_GRAPHICAL_CHART.equals(type)){
+         type = kCHART_GRAPHICAL_CHART;
          bChanged = true;
 
       }
@@ -912,6 +911,10 @@ public void render()
    if (kCHART_SURFACE_CHART.equals(type))
    {
       draw3DChartNative(
+         chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
+   }
+   else if (kCHART_GRAPHICAL_CHART.equals(type)) {
+      drawGraphicalChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
    else
