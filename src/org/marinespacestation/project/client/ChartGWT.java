@@ -429,7 +429,7 @@ public void assignChartOption(
    else if (kChart_Graphical_Chart.equals(option)){
       if (!kChart_Graphical_Chart.equals(type)){
          type = kChart_Graphical_Chart;
-         graphicalMenuHandler(elementId, false);
+         graphicalMenuHandler(messageDigestSHA256Native("spreadsheet"+url));
          bChanged = true;
 
       }
@@ -437,7 +437,7 @@ public void assignChartOption(
    if (bChanged)
    {
       if (!kChart_Graphical_Chart.equals(type)){
-         graphicalMenuHandler(elementId, true);
+         removeGraphicalMenuHandler();
       }
       if (type.equals(kChart_Graphical_Chart)){//for now
          type = kCHART_SURFACE_CHART;
@@ -447,7 +447,7 @@ public void assignChartOption(
    }
 }
 
-   public void graphicalMenuHandler(String mediaPanelId, boolean remove) {
+   public void graphicalMenuHandler(String mediaPanelId) {
 
       final Element mediaElem = Document.get().getElementById(mediaPanelId);
 
@@ -505,12 +505,12 @@ public void assignChartOption(
          }
       });
       mediaDropdownMenu.appendChild(mediaItemWider);
-
-      if (remove) {
-         removeMediaFromParent(mediaElem);
-      }
    }
 
+   public void removeGraphicalMenuHandler(){
+      removeMediaFromParent(Document.get().getElementById(elementId + "dropdown graphical-menu"));
+      Document.get().getElementById(elementId + "dropdown graphical-menu").removeFromParent();
+   }
    public void graphicalFunctions(String option) {//TODO
 
    }
