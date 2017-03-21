@@ -838,6 +838,10 @@ public void render()
       draw3DChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
+   else if (kCHART_GRAPHICAL_CHART.equals(type)) {
+      drawGraphicalChartNative(
+         chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
+   }
    else
    {
       draw2DChartNative(
