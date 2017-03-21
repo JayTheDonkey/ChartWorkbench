@@ -43,7 +43,7 @@ public static final String kCHART_LINE_CHART            = "LineChart";
 public static final String kCHART_PIE_CHART             = "PieChart";
 public static final String kCHART_SCATTER_CHART         = "ScatterChart";
 public static final String kCHART_SURFACE_CHART         = "SurfaceChart";
-public static final String kChart_Graphical_Chart       = "GraphicalChart";
+public static final String kCHART_GRAPHICAL_CHART       = "GraphicalChart";
 
 public static final String kKEY_OPTIONS                 = "options";
 public static final String kKEY_TYPE                    = "type";
@@ -425,9 +425,9 @@ public void assignChartOption(
          bChanged = true;
       }
    }
-   else if (kChart_Graphical_Chart.equals(option)){//this will never get called (for now)
-      if (!kChart_Graphical_Chart.equals(type)){
-         type = kChart_Graphical_Chart;
+   else if (kCHART_GRAPHICAL_CHART.equals(option)){//this will never get called (for now)
+      if (!kCHART_GRAPHICAL_CHART.equals(type)){
+         type = kCHART_GRAPHICAL_CHART;
          bChanged = true;
 
       }
