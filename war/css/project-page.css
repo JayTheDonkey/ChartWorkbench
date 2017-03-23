@@ -1,0 +1,283 @@
+/*BACKGROUNDS*/
+.bg-white {
+    background: white;
+}
+
+/*NAVBAR*/
+ .navbar {
+    border-bottom: 2px solid steelblue;
+}
+
+
+#navbar.navbar-nav li a:hover, #navbar .dropdown:hover, #navbar .navbar-nav li.navbar-active {
+    color: #3292ca !important;
+    background-color: #fff !important;
+}
+
+.dropdown-menu {
+    display: none;
+    min-width: 160px;
+    box-shadow: none;
+}
+
+/*Footer*/
+#footer.navbar-nav li a:hover, #footer .dropdown:hover, #footer .navbar-nav li.navbar-active {
+    color: #3292ca !important;
+    background-color: #fff !important;
+}
+
+/*GENERAL PAGE FORMATTING*/
+
+.section-divider {
+    margin-top: 20px;
+}
+
+.bottom-divider {
+    margin-bottom: 40px;
+}
+
+.jumbotron {
+    background: white;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+.jumbotron h1 {
+    color: steelblue;
+    text-align: center;
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+}
+
+h1,h2,h3,h4 {
+/*    color: #0F2A62;*/
+    color: steelblue;
+    font-weight: 700;   
+}
+
+
+/*SIDEBAR*/
+.affix {
+    top: 50px;
+    border-right: 1px solid steelblue;
+}
+
+.sidebar h3 {
+   color: steelblue;
+}
+
+.sidebar .active {
+    background: white;
+}
+
+.sidebar:focus {
+    background: inherit;
+}
+
+/*MEDIA*/
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.section-img
+{
+    width:          100%;
+    padding-bottom: 10px;
+    min-height:     60px;
+}
+
+/*DRAG AND DROP*/
+.section-text 
+{
+    line-height:  1.5em;
+    text-align:   justify;
+    border: 2px   solid rgba(0,0,0,0);
+    font-family:  Times New Roman;
+    font-size:    18px;
+    color:        black;
+    font-weight:  300;
+    margin-left:  50px;
+    margin-right: 50px;
+}
+
+/*
+p.section-text {
+    margin: 0px 30px 20px;
+    color: steelblue;
+    font-weight: 600;
+    font-size: 16px;
+}
+*/
+
+p.people {
+    margin: 10px;
+    color: steelblue;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.drop-hover-border {
+    border: 2px dashed darkgray;
+}
+/*MEDIA*/
+.mediaCaption
+{
+   background-color: inherit;
+   border-width:     0;
+   text-align:       center;
+}
+
+/*GOOGLE CHARTS*/
+.charts-widget
+{
+/*  min-height:500px;*/
+    height: 100%;
+    width: 100%;
+    margin:auto;
+    background:#fff;
+    text-align:center;
+}
+
+div[id^='formatting-tools'], div[id*='formatting-tools']{
+    display: none;
+}
+.formatting-tools
+{
+    display: none;
+}
+
+.formatting-tools > .btn-group > .dropdown-menu
+{
+    cursor: pointer;
+}
+
+#labelMenu
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.chartWithOverlay {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 60px;  /* chartArea top  */
+    left: 180px; /* chartArea left */
+    opacity: .5;
+    color: gray;
+    text-align: center;
+
+}
+
+/*CONTEXT MENU*/
+
+#contextMenu
+{
+    z-index: 10000;
+    position: absolute;
+    display: none;
+}
+
+ .dropdown-menu li.mini-top-buffer:hover, .dropdown-menu li.mini-bottom-buffer:hover, .dropdown-menu li a:hover{
+    background-color: cornflowerblue;
+    cursor: pointer;
+}
+
+#contextMenu .dropdown-menu li a:focus {
+    outline:0;
+}
+
+#contextMenu ul.dropdown-menu
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.dropdown:hover {
+    background:none;
+}
+.mini-top-buffer
+{
+    padding-top: 5px;
+}
+
+.mini-bottom-buffer
+{
+    padding-bottom: 5px;
+}
+
+.figure-caption {
+    text-align: right;
+    color: steelblue;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.projectTitle
+{
+   color:        steelblue;
+   text-align:   center;
+   font-size:    3.5vw;
+   font-weight:  700;
+   width:        90%;
+   padding:      0;
+   margin-left:  auto;
+   margin-right: auto;
+   border:       0px;
+}
+
+#projectTitleContainer
+{
+   margin-top:       50px;
+   background-color: white;
+   text-align:       center;
+}
+
+h1.section-title {
+    color: steelblue;
+    font-weight: 700;  
+    text-align: center;
+}
+
+a.people-link:hover {
+    text-decoration: none;
+}
+a.people-link:hover img {
+    -webkit-box-shadow: 0px 0px 10px 2px steelblue;
+    -moz-box-shadow: 0px 0px 10px 2px steelblue;
+    box-shadow: 0px 0px 10px 2px steelblue;
+    -moz-transition: all .6s;
+    -webkit-transition: all .6s;
+    -ms-transition: all .6s;
+    -o-transition: all .6s;
+    transition: all .6s;    
+}
+a.people-link img {
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;    
+}
+
+#editModeButton a {
+    color: #BBB1FF;
+    cursor: pointer;
+}
+#editModeButton a:hover {
+    color:skyblue;
+}
+
+.bottom-margin-20 {
+    margin-bottom: 20px;
+}

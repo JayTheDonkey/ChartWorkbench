@@ -1,0 +1,84 @@
+.logonPanel
+{
+   width:            466px;
+   position:         absolute;
+   z-index:          10000;
+   background-color: #5284b7;
+   color:            white;
+   font-family:      "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", Arial "Unicode MS", "sans-serif";
+   font-size:        12px;
+   margin-left:      auto;
+   margin-right:     auto;
+   top:              10px;
+   left:             0px;
+   right:            0px;
+}
+.splash
+{
+   width: 100%;
+}
+.logonTitle
+{
+   width:      100%;
+   font-size:  18pt;
+   margin-top: 20px;
+   text-align: center;
+   cursor:     pointer;
+}
+.logonFieldGroup
+{
+   margin-left:  auto;
+   margin-right: auto;
+   margin-top:   20px;
+   width:        262px;
+}
+.tbEMail
+{
+   margin-top: 20px;
+   width:      100%;
+   color:      black;
+}
+.lblCaption
+{
+   margin-top: 5px;
+   color:      white;
+   font-size:  12px;
+   width:      100%;
+}
+.tbPassword
+{
+   margin-top: 20px;
+   width:      100%;
+   color:      black;
+   font-size:  14px;
+}
+.btnCommand
+{
+   margin-top: 20px;
+   width:      100%;
+}
+.account
+{
+   width:      100%;
+   margin-top: 20px;
+   font-size:  14px;
+   cursor:     pointer;
+}
+.forgotPassword
+{
+   width:      100%;
+   margin-top: 10px;
+   font-size:  14px;
+   cursor:     pointer;
+}
+.errorMsg
+{
+   width:         100%;
+   margin-bottom: 20px;
+   font-size:     14px;
+}
+.logonFooter
+{
+   width:         100%;
+   height:        20px;
+}
