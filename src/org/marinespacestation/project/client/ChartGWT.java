@@ -297,7 +297,7 @@ public void addChartMenuHandler(
    });
    mediaDropdownMenu.appendChild(mediaItemSurfaceChart);
 
-                                       // Graphical chart (temp)------------- //
+                                       // Graphical chart ------------------- //
    Element mediaItemGraphicalChart = Document.get().createLIElement();
    mediaItemGraphicalChart.setId("mediaItemGraphicalChart");
    Element mediaItemGraphicalChartAnchor = Document.get().createAnchorElement();
@@ -316,7 +316,7 @@ public void addChartMenuHandler(
    });
    mediaDropdownMenu.appendChild(mediaItemGraphicalChart);
 
-   graphicalMenuHandler(elementId);
+   //graphicalMenuHandler(elementId);
 }
 /*------------------------------------------------------------------------------
 
@@ -439,18 +439,14 @@ public void assignChartOption(
       if (!kCHART_GRAPHICAL_CHART.equals(type))
       {
          type = kCHART_GRAPHICAL_CHART;
-         graphicalMenuHandler(messageDigestSHA256Native("spreadsheet"+url));
          bChanged = true;
 
       }
    }
    if (bChanged)
    {
-      /*if (!kCHART_GRAPHICAL_CHART.equals(type)){
+      if (!kCHART_GRAPHICAL_CHART.equals(type)){
          removeGraphicalMenuHandler();
-      }*/
-      if (type.equals(kCHART_GRAPHICAL_CHART)){//for now
-         type = kCHART_SURFACE_CHART;
       }
       notifyChangeListeners(false);
       render();
@@ -463,6 +459,7 @@ public void assignChartOption(
 
       Element graphicalMenu = Document.get().createDivElement();
       graphicalMenu.addClassName("dropdown graphical-menu");
+      graphicalMenu.setId("graphical menu");
       mediaElem.appendChild(graphicalMenu);
 
       Element menuButton = Document.get().createPushButtonElement();
@@ -569,8 +566,8 @@ public void assignChartOption(
    }
 
    public void removeGraphicalMenuHandler(){
-      removeMediaFromParent(Document.get().getElementById(elementId + "dropdown graphical-menu"));
-      Document.get().getElementById(elementId + "dropdown graphical-menu").removeFromParent();
+      removeMediaFromParent(Document.get().getElementById("graphical menu"));
+      Document.get().getElementById("graphical menu").removeFromParent();
    }
    public void graphicalFunctions(String option) {//TODO
 
@@ -975,10 +972,14 @@ public void render()
       draw3DChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
-   /*else if (kCHART_GRAPHICAL_CHART.equals(type)) {
-      drawGraphicalChartNative(
+   else if (kCHART_GRAPHICAL_CHART.equals(type)) {
+      graphicalMenuHandler(elementId);
+      type = kCHART_SURFACE_CHART;
+      draw3DChartNative(chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
+      /*drawGraphicalChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
-   }*/
+         */
+   }
    else
    {
       draw2DChartNative(
