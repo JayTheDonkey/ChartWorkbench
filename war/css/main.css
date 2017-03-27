@@ -1,0 +1,355 @@
+
+
+/*TEXT AND FONTS*/
+* {
+    font-family: Open Sans;
+}
+
+.page-text {
+    color: #ebf1ff;
+    text-shadow: 0 3px 15px rgba(0,0,0,.4); 
+    font-family: "Open Sans",Arial, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+}
+
+.page-text em{
+    font-weight: 500;
+    line-height: 35px;
+}
+
+.page-text h2 {
+    font-weight: 600;
+    line-height: 35px;
+}
+
+.general-link {
+    font-family: "Open Sans",Arial, Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: cornflowerblue;
+    text-shadow: 0 2px 15px rgba(0,0,0,.4);
+}
+
+.general-link h2 {
+    font-weight: 600;
+}
+
+.general-link:hover, .general-link:active, .general-link:focus {
+    cursor: pointer;
+    text-decoration: none;
+    color: #83AAF0;
+}
+
+.basic-font {
+    font-family: "Open Sans",Arial, Helvetica, Arial, sans-serif;
+}
+
+.extra-text-shadow {
+	text-shadow: 0 2px 5px rgba(0,0,0,.6), 0px 2px 80px rgba(0,0,0,1);
+}
+
+/*SECTION STYLES*/
+.jumbotron {
+    margin: 0;
+    padding-top: 50px;
+    padding-bottom: 0px;
+    font-family: "Open Sans",Arial, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+}
+
+body {
+    background: #ebf1ff;
+    
+}
+
+
+
+/*
+* {
+  background: #000 !important;
+  color: #0f0 !important;
+  outline: solid #f00 1px !important;
+}
+*/
+
+
+/*BUFFERS*/
+.top-buffer-80 {
+    padding-top: 80px;
+}
+.top-buffer-60 {
+    padding-top: 60px;
+}
+.top-buffer-40 {
+    padding-top: 40px;
+}
+.top-buffer-20 {
+    padding-top: 20px;
+}
+
+.bottom-buffer-80 {
+    padding-bottom: 80px;
+}
+.bottom-buffer-60 {
+    padding-bottom: 60px;
+}
+.bottom-buffer-40 {
+    padding-bottom: 40px;
+}
+.bottom-buffer-20 {
+    padding-bottom: 20px;
+}
+
+
+/*BACKGROUNDS*/
+.bg-sky {
+    background-color: #ebf1ff;
+}
+
+.bg-blue {
+    background-image: linear-gradient(0deg,#150578,#78C0E0);
+    margin: 0px;
+    padding: 0px;
+}
+
+.bg-navbar {
+    background-color: #ebf1ff;
+}
+
+.bg-footer {
+    background-color: #07023F;
+}
+
+
+
+/*NAVBAR & FOOTER*/
+#navbar, #footer {
+    margin-bottom: 0;
+    z-index: 9999;
+    border: 0;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 0;
+    max-width: 100%;
+    
+}
+
+.navbar-logo {
+    height:       100px; 
+    padding-right:10px;
+    padding-left: 10px;
+    padding-top:  10px;
+} 
+
+#navbar .navbar-brand {
+	color: #3e3e74;
+    letter-spacing: 1px;
+}
+
+#navbar li a {
+    color: #0E0E52;
+    letter-spacing: 3px;
+
+}
+
+#navbar li a:hover, .dropdown:hover {
+    color: #3292ca;
+    background-color: #fff;
+}
+
+/* Dropdown Menu (Hidden by Default) */
+.dropdown-menu {
+    display: none;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: none;
+}
+
+/* Links inside the dropdown */
+#navbar .dropdown-menu li a {
+    letter-spacing: 2px;
+}
+
+.dropdown-header {
+    padding-top: 5%;
+    font-size: 100%;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-disabled:hover .dropdown-menu {
+    display: none !important;
+    
+}
+
+#footer li a {
+	text-align: center;
+    color: cornflowerblue;
+    letter-spacing: 1px;
+	padding-top: 25px;
+    padding-bottom: 20px;
+
+}
+
+#footer li a:not(.no-link):hover {
+    color: #c1d4f7;
+}
+
+@media (max-width:992px) {
+	#footer li a {
+		padding-top: 14px;
+		padding-bottom: 10px;
+	}
+}
+@media (min-width:768px) {
+	#footer div ul {
+		width: 738px;
+		left: calc(50% - 369px);
+		position: relative;
+	}
+}
+@media (min-width:992px) {
+	#footer div ul {
+		width: 962px;
+		left: calc(50% - 481px);
+		position: relative;
+	}
+}
+@media (min-width:1200px) {
+	#footer div ul {
+		width: 1170px;
+		left: calc(50% - 585px);
+		position: relative;
+	}
+}
+
+/*from http://stackoverflow.com/questions/10803217/using-css-to-give-a-black-icon-another-color*/
+/*
+#footer .twitter-button:hover {
+	background-color: #c1d4f7;
+}
+
+@supports (-webkit-mask-image: url('/resources/img/twitter-footer.png')) {
+	#footer .twitter-button {
+		background-color: cornflowerblue;
+		-webkit-mask-image: url('/resources/img/twitter-footer.png');
+		mask-image: url('/resources/img/twitter-footer.png');
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+	}
+}
+
+@supports not (-webkit-mask-image: url('/resources/img/twitter-footer.png')) {
+	#footer .twitter-button {
+		background-image: url('/resources/img/twitter-footer-backup.png');
+		border-radius: 10px;
+	}
+}
+*/
+
+@font-face {
+    font-family: 'icomoon';
+    src:    url('/resources/fonts/twitter.eot?d5zr2q');
+    src:    url('/resources/fonts/twitter.eot?d5zr2q#iefix') format('embedded-opentype'),
+        	url('/resources/fonts/twitter.ttf?d5zr2q') format('truetype'),
+        	url('/resources/fonts/twitter.woff?d5zr2q') format('woff'),
+        	url('/resources/fonts/twitter.svg?d5zr2q#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-twitter-square:before {
+	font-size: 25px;
+    content: "\e900";
+}
+.icon-twitter-outline:before {
+	font-size: 20px;
+    content: "\e901";
+}
+
+
+/*MEDIA*/
+
+.media-container-left
+{
+   position:relative;
+   text-align:center;
+   margin:20px 20px 20px 0px;
+   width:40%;
+   float:left;
+}
+.media-container-middle
+{
+   position:relative;
+   text-align:center;
+   display: block;
+   margin-top:    20px;
+   margin-left:   auto;
+   margin-bottom: 20px;
+   margin-right:  auto;
+   width:80%;
+}
+.media-container-right
+{
+   position:relative;
+   text-align:center;
+   margin:20px 0px 20px 20px;
+   width:40%;
+   float:right;
+}
+.media-delete
+{
+   position:absolute;
+   top:   0px;
+   right: 0px;
+   margin:24px;
+   cursor: pointer;
+}
+.media-menu
+{
+   position:absolute;
+   top:   0px;
+   left:  0px;
+   margin:24px;
+   cursor: pointer;
+}
+.graphical-menu
+{
+    position:absolute;
+    top:    0px;
+    left:  60px;
+    margin:24px;
+    cursor: pointer;
+}
+
+/*MISCELLANEOUS*/
+
+.rounded {
+/*
+	opacity hack needed for ken burns containers
+	http://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera
+*/
+	opacity: .99;
+	border-radius: 12px;
+}

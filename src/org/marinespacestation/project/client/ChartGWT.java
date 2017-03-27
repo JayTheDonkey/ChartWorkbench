@@ -46,6 +46,12 @@ public static final String kCHART_SCATTER_CHART         = "ScatterChart";
 public static final String kCHART_SURFACE_CHART         = "SurfaceChart";
 public static final String kCHART_GRAPHICAL_CHART       = "GraphicalChart";
 
+public static final String kGRAPHICAL_CORRELATION       = "Correlation";
+public static final String kGRAPHICAL_FUCNTIONS         = "Functions";
+public static final String kGRAPHICAL_TRANSFORMATIONS   = "Transformations";
+public static final String kGRAPHICAL_BESTFIT           = "Line of Best Fit";
+public static final String kGRAPHICAL_CROSS_SECTIONS    = "Cross Sections";
+
 public static final String kKEY_OPTIONS                 = "options";
 public static final String kKEY_TYPE                    = "type";
 
@@ -291,7 +297,7 @@ public void addChartMenuHandler(
    });
    mediaDropdownMenu.appendChild(mediaItemSurfaceChart);
 
-                                       // Graphical chart (temp)------------- //
+                                       // Graphical chart ------------------- //
    Element mediaItemGraphicalChart = Document.get().createLIElement();
    mediaItemGraphicalChart.setId("mediaItemGraphicalChart");
    Element mediaItemGraphicalChartAnchor = Document.get().createAnchorElement();
@@ -309,6 +315,8 @@ public void addChartMenuHandler(
       }
    });
    mediaDropdownMenu.appendChild(mediaItemGraphicalChart);
+
+   //graphicalMenuHandler(elementId);
 }
 /*------------------------------------------------------------------------------
 
@@ -414,7 +422,7 @@ public void assignChartOption(
    {
       if (!kCHART_PIE_CHART.equals(type))
       {
-         type      = kCHART_PIE_CHART;
+         type     = kCHART_PIE_CHART;
          bChanged = true;
       }
    }
@@ -430,19 +438,15 @@ public void assignChartOption(
    {
       if (!kCHART_GRAPHICAL_CHART.equals(type))
       {
-         type = kCHART_GRAPHICAL_CHART;
-         graphicalMenuHandler(messageDigestSHA256Native("spreadsheet"+url));
+         type     = kCHART_GRAPHICAL_CHART;
          bChanged = true;
 
       }
    }
    if (bChanged)
    {
-      /*if (!kCHART_GRAPHICAL_CHART.equals(type)){
+      if (!kCHART_GRAPHICAL_CHART.equals(type)){
          removeGraphicalMenuHandler();
-      }*/
-      if (type.equals(kCHART_GRAPHICAL_CHART)){//for now
-         type = kCHART_SURFACE_CHART;
       }
       notifyChangeListeners(false);
       render();
@@ -455,13 +459,14 @@ public void assignChartOption(
 
       Element graphicalMenu = Document.get().createDivElement();
       graphicalMenu.addClassName("dropdown graphical-menu");
+      graphicalMenu.setId("graphical menu");
       mediaElem.appendChild(graphicalMenu);
 
       Element menuButton = Document.get().createPushButtonElement();
       menuButton.addClassName("btn btn-secondary dropdown-toggle");
       menuButton.setPropertyString("type", "button");
       menuButton.setPropertyString("data-toggle", "dropdown");
-      menuButton.getStyle().setMarginTop(100, Unit.PX);
+      menuButton.setInnerText("Graphical ");
       graphicalMenu.appendChild(menuButton);
 
       Element span = Document.get().createSpanElement();
@@ -474,44 +479,96 @@ public void assignChartOption(
       mediaDropdownMenu.getStyle().setMarginTop(0, Unit.PX);
       graphicalMenu.appendChild(mediaDropdownMenu);
 
-      //-----------Correlations--------------//
-      Element mediaItemCorrelation = Document.get().createLIElement();
-      mediaItemCorrelation.setId("mediaItemCorrelation");
-      Element mediaItemCorrelationAnchor = Document.get().createAnchorElement();
-      mediaItemCorrelationAnchor.setInnerText("Correlation");
-      mediaItemCorrelation.appendChild(mediaItemCorrelationAnchor);
-      Event.sinkEvents(mediaItemCorrelation, Event.ONCLICK);
-      DOM.setEventListener(mediaItemCorrelation, new EventListener() {
+                                          //-----------Correlations-------------------//
+      Element graphicalItemCorrelation = Document.get().createLIElement();
+      graphicalItemCorrelation.setId("graphcialItemCorrelation");
+      Element graphicalItemCorrelationAnchor = Document.get().createAnchorElement();
+      graphicalItemCorrelationAnchor.setInnerText("Correlation");
+      graphicalItemCorrelation.appendChild(graphicalItemCorrelationAnchor);
+      Event.sinkEvents(graphicalItemCorrelation, Event.ONCLICK);
+      DOM.setEventListener(graphicalItemCorrelation, new EventListener() {
          public void onBrowserEvent(Event event) {
 
             if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kMEDIA_POSTION_WIDER);//fixme
+               graphicalFunctions(kGRAPHICAL_CORRELATION);
             }
          }
       });
-      mediaDropdownMenu.appendChild(mediaItemCorrelation);
+      mediaDropdownMenu.appendChild(graphicalItemCorrelation);
 
-      //------------Functions---------------//
-      Element mediaItemWider = Document.get().createLIElement();
-      mediaItemWider.setId("mediaItemWider");
-      Element mediaItemWiderAnchor = Document.get().createAnchorElement();
-      mediaItemWiderAnchor.setInnerText("Wider");
-      mediaItemWider.appendChild(mediaItemWiderAnchor);
-      Event.sinkEvents(mediaItemWider, Event.ONCLICK);
-      DOM.setEventListener(mediaItemWider, new EventListener() {
+                                          //------------Cross Sections----------------//
+      Element graphicalItemCrossSections = Document.get().createLIElement();
+      graphicalItemCrossSections.setId("graphicalItemCrossSections");
+      Element graphicalItemCrossSectionsAnchor = Document.get().createAnchorElement();
+      graphicalItemCrossSectionsAnchor.setInnerText("Cross Sections");
+      graphicalItemCrossSections.appendChild(graphicalItemCrossSectionsAnchor);
+      Event.sinkEvents(graphicalItemCrossSections, Event.ONCLICK);
+      DOM.setEventListener(graphicalItemCrossSections, new EventListener() {
          public void onBrowserEvent(Event event) {
 
             if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kMEDIA_POSTION_WIDER);//fixme
+               graphicalFunctions(kGRAPHICAL_CROSS_SECTIONS);
             }
          }
       });
-      mediaDropdownMenu.appendChild(mediaItemWider);
+      mediaDropdownMenu.appendChild(graphicalItemCrossSections);
+
+                                          //------------Functions---------------------//
+      Element graphicalItemFunctions = Document.get().createLIElement();
+      graphicalItemFunctions.setId("graphicalItemFunctions");
+      Element graphicalItemFunctionsAnchor = Document.get().createAnchorElement();
+      graphicalItemFunctionsAnchor.setInnerText("Functions");
+      graphicalItemFunctions.appendChild(graphicalItemFunctionsAnchor);
+      Event.sinkEvents(graphicalItemFunctions, Event.ONCLICK);
+      DOM.setEventListener(graphicalItemFunctions, new EventListener() {
+         public void onBrowserEvent(Event event) {
+
+            if (event.getType().equalsIgnoreCase("click")) {
+               graphicalFunctions(kGRAPHICAL_FUCNTIONS);
+            }
+         }
+      });
+      mediaDropdownMenu.appendChild(graphicalItemFunctions);
+
+                                          //------------Line of Best Fit--------------//
+      Element graphicalItemBestFit = Document.get().createLIElement();
+      graphicalItemBestFit.setId("graphicalItemBestFit");
+      Element graphicalItemBestFitAnchor = Document.get().createAnchorElement();
+      graphicalItemBestFitAnchor.setInnerText("Line of Best Fit");
+      graphicalItemBestFit.appendChild(graphicalItemBestFitAnchor);
+      Event.sinkEvents(graphicalItemBestFit, Event.ONCLICK);
+      DOM.setEventListener(graphicalItemBestFit, new EventListener() {
+         public void onBrowserEvent(Event event) {
+
+            if (event.getType().equalsIgnoreCase("click")) {
+               graphicalFunctions(kGRAPHICAL_BESTFIT);
+            }
+         }
+      });
+      mediaDropdownMenu.appendChild(graphicalItemBestFit);
+
+                                          //------------Transformations---------------//
+      Element graphicalItemTransformations = Document.get().createLIElement();
+      graphicalItemTransformations.setId("graphicalItemTransformations");
+      Element graphicalItemTransformationsAnchor = Document.get().createAnchorElement();
+      graphicalItemTransformationsAnchor.setInnerText("Transformations");
+      graphicalItemTransformations.appendChild(graphicalItemTransformationsAnchor);
+      Event.sinkEvents(graphicalItemTransformations, Event.ONCLICK);
+      DOM.setEventListener(graphicalItemTransformations, new EventListener() {
+         public void onBrowserEvent(Event event) {
+
+            if (event.getType().equalsIgnoreCase("click")) {
+               graphicalFunctions(kGRAPHICAL_TRANSFORMATIONS);
+            }
+         }
+      });
+      mediaDropdownMenu.appendChild(graphicalItemTransformations);
    }
 
    public void removeGraphicalMenuHandler(){
-      removeMediaFromParent(Document.get().getElementById(elementId + "dropdown graphical-menu"));
-      Document.get().getElementById(elementId + "dropdown graphical-menu").removeFromParent();
+      if (!(Document.get().getElementById("graphical menu") == null)) {
+         Document.get().getElementById("graphical menu").removeFromParent();
+      }
    }
    public void graphicalFunctions(String option) {//TODO
 
@@ -916,10 +973,14 @@ public void render()
       draw3DChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
-   /*else if (kCHART_GRAPHICAL_CHART.equals(type)) {
-      drawGraphicalChartNative(
+   else if (kCHART_GRAPHICAL_CHART.equals(type)) {
+      graphicalMenuHandler(elementId);
+      type = kCHART_SURFACE_CHART;
+      draw3DChartNative(chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
+      /*drawGraphicalChartNative(
          chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
-   }*/
+         */
+   }
    else
    {
       draw2DChartNative(
