@@ -562,7 +562,7 @@ public void assignChartOption(
             }
          }
       });
-      mediaDropdownMenu.appendChild(graphicalItemFunctions);
+      mediaDropdownMenu.appendChild(graphicalItemTransformations);
    }
 
    public void removeGraphicalMenuHandler(){
