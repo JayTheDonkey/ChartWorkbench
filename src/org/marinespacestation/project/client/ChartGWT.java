@@ -422,7 +422,7 @@ public void assignChartOption(
    {
       if (!kCHART_PIE_CHART.equals(type))
       {
-         type      = kCHART_PIE_CHART;
+         type     = kCHART_PIE_CHART;
          bChanged = true;
       }
    }
@@ -438,7 +438,7 @@ public void assignChartOption(
    {
       if (!kCHART_GRAPHICAL_CHART.equals(type))
       {
-         type = kCHART_GRAPHICAL_CHART;
+         type     = kCHART_GRAPHICAL_CHART;
          bChanged = true;
 
       }
@@ -566,8 +566,9 @@ public void assignChartOption(
    }
 
    public void removeGraphicalMenuHandler(){
-      removeMediaFromParent(Document.get().getElementById("graphical menu"));
-      Document.get().getElementById("graphical menu").removeFromParent();
+      if (!(Document.get().getElementById("graphical menu") == null)) {
+         Document.get().getElementById("graphical menu").removeFromParent();
+      }
    }
    public void graphicalFunctions(String option) {//TODO
 
