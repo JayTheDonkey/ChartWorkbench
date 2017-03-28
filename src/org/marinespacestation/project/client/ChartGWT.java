@@ -47,7 +47,7 @@ public static final String kCHART_SURFACE_CHART         = "SurfaceChart";
 public static final String kCHART_GRAPHICAL_CHART       = "GraphicalChart";
 
 public static final String kGRAPHICAL_CORRELATION       = "Correlation";
-public static final String kGRAPHICAL_FUCNTIONS         = "Functions";
+public static final String kGRAPHICAL_FUNCTIONS         = "Functions";
 public static final String kGRAPHICAL_TRANSFORMATIONS   = "Transformations";
 public static final String kGRAPHICAL_BESTFIT           = "Line of Best Fit";
 public static final String kGRAPHICAL_CROSS_SECTIONS    = "Cross Sections";
@@ -452,127 +452,193 @@ public void assignChartOption(
       render();
    }
 }
+/*------------------------------------------------------------------------------
 
-   public void graphicalMenuHandler(String mediaPanelId) {
+@name       graphicalMenuHandler - graphical menu handler
+                                                                              */
+   /**
+    Create the Graphical Options Menu
 
-      final Element mediaElem = Document.get().getElementById(mediaPanelId);
+    @return     void
 
-      Element graphicalMenu = Document.get().createDivElement();
-      graphicalMenu.addClassName("dropdown graphical-menu");
-      graphicalMenu.setId("graphical menu");
-      mediaElem.appendChild(graphicalMenu);
+    @history
 
-      Element menuButton = Document.get().createPushButtonElement();
-      menuButton.addClassName("btn btn-secondary dropdown-toggle");
-      menuButton.setPropertyString("type", "button");
-      menuButton.setPropertyString("data-toggle", "dropdown");
-      menuButton.setInnerText("Graphical ");
-      graphicalMenu.appendChild(menuButton);
+    @notes      Called when the Graphical chart type is selected. Removed when it is switch away.
+                                                                              */
+//------------------------------------------------------------------------------
+public void graphicalMenuHandler(String mediaPanelId) {
 
-      Element span = Document.get().createSpanElement();
-      span.addClassName("caret");
-      menuButton.appendChild(span);
+   final Element mediaElem = Document.get().getElementById(mediaPanelId);
 
-      Element mediaDropdownMenu = Document.get().createULElement();
-      mediaDropdownMenu.addClassName("dropdown-menu");
-      mediaDropdownMenu.setId(mediaPanelId + "dropdown-menu");
-      mediaDropdownMenu.getStyle().setMarginTop(0, Unit.PX);
-      graphicalMenu.appendChild(mediaDropdownMenu);
+   Element graphicalMenu = Document.get().createDivElement();
+   graphicalMenu.addClassName("dropdown graphical-menu");
+   graphicalMenu.setId("graphical menu");
+   mediaElem.appendChild(graphicalMenu);
 
-                                          //-----------Correlations-------------------//
-      Element graphicalItemCorrelation = Document.get().createLIElement();
-      graphicalItemCorrelation.setId("graphcialItemCorrelation");
-      Element graphicalItemCorrelationAnchor = Document.get().createAnchorElement();
-      graphicalItemCorrelationAnchor.setInnerText("Correlation");
-      graphicalItemCorrelation.appendChild(graphicalItemCorrelationAnchor);
-      Event.sinkEvents(graphicalItemCorrelation, Event.ONCLICK);
-      DOM.setEventListener(graphicalItemCorrelation, new EventListener() {
-         public void onBrowserEvent(Event event) {
+   Element menuButton = Document.get().createPushButtonElement();
+   menuButton.addClassName("btn btn-secondary dropdown-toggle");
+   menuButton.setPropertyString("type", "button");
+   menuButton.setPropertyString("data-toggle", "dropdown");
+   menuButton.setInnerText("Graphical ");
+   graphicalMenu.appendChild(menuButton);
 
-            if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kGRAPHICAL_CORRELATION);
-            }
+   Element span = Document.get().createSpanElement();
+   span.addClassName("caret");
+   menuButton.appendChild(span);
+
+   Element mediaDropdownMenu = Document.get().createULElement();
+   mediaDropdownMenu.addClassName("dropdown-menu");
+   mediaDropdownMenu.setId(mediaPanelId + "dropdown-menu");
+   mediaDropdownMenu.getStyle().setMarginTop(0, Unit.PX);
+   graphicalMenu.appendChild(mediaDropdownMenu);
+
+                                       //-----------Correlations-------------------//
+   Element graphicalItemCorrelation = Document.get().createLIElement();
+   graphicalItemCorrelation.setId("graphcialItemCorrelation");
+   Element graphicalItemCorrelationAnchor = Document.get().createAnchorElement();
+   graphicalItemCorrelationAnchor.setInnerText("Correlation");
+   graphicalItemCorrelation.appendChild(graphicalItemCorrelationAnchor);
+   Event.sinkEvents(graphicalItemCorrelation, Event.ONCLICK);
+   DOM.setEventListener(graphicalItemCorrelation, new EventListener() {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click")) {
+            graphicalFunctions(kGRAPHICAL_CORRELATION);
          }
-      });
-      mediaDropdownMenu.appendChild(graphicalItemCorrelation);
-
-                                          //------------Cross Sections----------------//
-      Element graphicalItemCrossSections = Document.get().createLIElement();
-      graphicalItemCrossSections.setId("graphicalItemCrossSections");
-      Element graphicalItemCrossSectionsAnchor = Document.get().createAnchorElement();
-      graphicalItemCrossSectionsAnchor.setInnerText("Cross Sections");
-      graphicalItemCrossSections.appendChild(graphicalItemCrossSectionsAnchor);
-      Event.sinkEvents(graphicalItemCrossSections, Event.ONCLICK);
-      DOM.setEventListener(graphicalItemCrossSections, new EventListener() {
-         public void onBrowserEvent(Event event) {
-
-            if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kGRAPHICAL_CROSS_SECTIONS);
-            }
-         }
-      });
-      mediaDropdownMenu.appendChild(graphicalItemCrossSections);
-
-                                          //------------Functions---------------------//
-      Element graphicalItemFunctions = Document.get().createLIElement();
-      graphicalItemFunctions.setId("graphicalItemFunctions");
-      Element graphicalItemFunctionsAnchor = Document.get().createAnchorElement();
-      graphicalItemFunctionsAnchor.setInnerText("Functions");
-      graphicalItemFunctions.appendChild(graphicalItemFunctionsAnchor);
-      Event.sinkEvents(graphicalItemFunctions, Event.ONCLICK);
-      DOM.setEventListener(graphicalItemFunctions, new EventListener() {
-         public void onBrowserEvent(Event event) {
-
-            if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kGRAPHICAL_FUCNTIONS);
-            }
-         }
-      });
-      mediaDropdownMenu.appendChild(graphicalItemFunctions);
-
-                                          //------------Line of Best Fit--------------//
-      Element graphicalItemBestFit = Document.get().createLIElement();
-      graphicalItemBestFit.setId("graphicalItemBestFit");
-      Element graphicalItemBestFitAnchor = Document.get().createAnchorElement();
-      graphicalItemBestFitAnchor.setInnerText("Line of Best Fit");
-      graphicalItemBestFit.appendChild(graphicalItemBestFitAnchor);
-      Event.sinkEvents(graphicalItemBestFit, Event.ONCLICK);
-      DOM.setEventListener(graphicalItemBestFit, new EventListener() {
-         public void onBrowserEvent(Event event) {
-
-            if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kGRAPHICAL_BESTFIT);
-            }
-         }
-      });
-      mediaDropdownMenu.appendChild(graphicalItemBestFit);
-
-                                          //------------Transformations---------------//
-      Element graphicalItemTransformations = Document.get().createLIElement();
-      graphicalItemTransformations.setId("graphicalItemTransformations");
-      Element graphicalItemTransformationsAnchor = Document.get().createAnchorElement();
-      graphicalItemTransformationsAnchor.setInnerText("Transformations");
-      graphicalItemTransformations.appendChild(graphicalItemTransformationsAnchor);
-      Event.sinkEvents(graphicalItemTransformations, Event.ONCLICK);
-      DOM.setEventListener(graphicalItemTransformations, new EventListener() {
-         public void onBrowserEvent(Event event) {
-
-            if (event.getType().equalsIgnoreCase("click")) {
-               graphicalFunctions(kGRAPHICAL_TRANSFORMATIONS);
-            }
-         }
-      });
-      mediaDropdownMenu.appendChild(graphicalItemTransformations);
-   }
-
-   public void removeGraphicalMenuHandler(){
-      if (!(Document.get().getElementById("graphical menu") == null)) {
-         Document.get().getElementById("graphical menu").removeFromParent();
       }
-   }
-   public void graphicalFunctions(String option) {//TODO
+   });
+   mediaDropdownMenu.appendChild(graphicalItemCorrelation);
 
+                                       //------------Cross Sections----------------//
+   Element graphicalItemCrossSections = Document.get().createLIElement();
+   graphicalItemCrossSections.setId("graphicalItemCrossSections");
+   Element graphicalItemCrossSectionsAnchor = Document.get().createAnchorElement();
+   graphicalItemCrossSectionsAnchor.setInnerText("Cross Sections");
+   graphicalItemCrossSections.appendChild(graphicalItemCrossSectionsAnchor);
+   Event.sinkEvents(graphicalItemCrossSections, Event.ONCLICK);
+   DOM.setEventListener(graphicalItemCrossSections, new EventListener() {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click")) {
+            graphicalFunctions(kGRAPHICAL_CROSS_SECTIONS);
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(graphicalItemCrossSections);
+
+                                       //------------Functions---------------------//
+   Element graphicalItemFunctions = Document.get().createLIElement();
+   graphicalItemFunctions.setId("graphicalItemFunctions");
+   Element graphicalItemFunctionsAnchor = Document.get().createAnchorElement();
+   graphicalItemFunctionsAnchor.setInnerText("Functions");
+   graphicalItemFunctions.appendChild(graphicalItemFunctionsAnchor);
+   Event.sinkEvents(graphicalItemFunctions, Event.ONCLICK);
+   DOM.setEventListener(graphicalItemFunctions, new EventListener() {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click")) {
+            graphicalFunctions(kGRAPHICAL_FUNCTIONS);
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(graphicalItemFunctions);
+
+                                       //------------Line of Best Fit--------------//
+   Element graphicalItemBestFit = Document.get().createLIElement();
+   graphicalItemBestFit.setId("graphicalItemBestFit");
+   Element graphicalItemBestFitAnchor = Document.get().createAnchorElement();
+   graphicalItemBestFitAnchor.setInnerText("Line of Best Fit");
+   graphicalItemBestFit.appendChild(graphicalItemBestFitAnchor);
+   Event.sinkEvents(graphicalItemBestFit, Event.ONCLICK);
+   DOM.setEventListener(graphicalItemBestFit, new EventListener() {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click")) {
+            graphicalFunctions(kGRAPHICAL_BESTFIT);
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(graphicalItemBestFit);
+
+                                       //------------Transformations---------------//
+   Element graphicalItemTransformations = Document.get().createLIElement();
+   graphicalItemTransformations.setId("graphicalItemTransformations");
+   Element graphicalItemTransformationsAnchor = Document.get().createAnchorElement();
+   graphicalItemTransformationsAnchor.setInnerText("Transformations");
+   graphicalItemTransformations.appendChild(graphicalItemTransformationsAnchor);
+   Event.sinkEvents(graphicalItemTransformations, Event.ONCLICK);
+   DOM.setEventListener(graphicalItemTransformations, new EventListener() {
+      public void onBrowserEvent(Event event) {
+
+         if (event.getType().equalsIgnoreCase("click")) {
+            graphicalFunctions(kGRAPHICAL_TRANSFORMATIONS);
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(graphicalItemTransformations);
+}
+/*------------------------------------------------------------------------------
+
+@name       removeGraphicalMenuHandler - removes the graphical menu handler
+                                                                              */
+   /**
+    Deletes the graphical menu
+
+    @return     void
+
+    @history
+
+    @notes
+                                                                              */
+//------------------------------------------------------------------------------
+public void removeGraphicalMenuHandler(){
+   if (!(Document.get().getElementById("graphical menu") == null)) {
+      Document.get().getElementById("graphical menu").removeFromParent();
    }
+}
+/*------------------------------------------------------------------------------
+
+@name       graphicalFunctions - graphical functions
+                                                                              */
+   /**
+    Contains all the functionality for the Graphical Options
+
+    @return     void
+
+    @history
+
+    @notes
+                                                                              */
+//------------------------------------------------------------------------------
+public void graphicalFunctions(String option) {//TODO
+
+   boolean changed = false;
+
+   if (option.equals(kGRAPHICAL_BESTFIT)) {
+      //createLineOfBestFit();
+      changed = true;
+   }
+   else if (option.equals(kGRAPHICAL_CORRELATION)) {
+      //calculateCorrelation();
+      changed = true;
+   }
+   else if (option.equals(kGRAPHICAL_CROSS_SECTIONS)) {
+      //createCrossSectionHandler
+      changed = true;
+   }
+   else if (option.equals(kGRAPHICAL_FUNCTIONS)) {
+      //createFunctions
+      changed = true;
+   }
+   else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {
+      //createTransformationsHandler
+      changed = true;
+   }
+   if (changed){
+      notifyChangeListeners(false);
+      render();
+   }
+}
 /*------------------------------------------------------------------------------
 
 @name       createNativeOptions - create chart options
