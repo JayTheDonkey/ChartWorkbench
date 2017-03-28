@@ -78,6 +78,7 @@ public static final Map<String,String> kDEFAULT_OPTIONS = Collections.unmodifiab
                                        // class variables ------------------- //
                                        // (none)                              //
                                        // public instance variables --------- //
+public GraphicalFunctions functions;
 public String             type;        // chart type                          //
 public String             data;        // chart data (not persistent)         //
 public Map<String,String> options;     // options                             //
@@ -105,6 +106,7 @@ public ChartGWT()
 {
    this.type    = kCHART_LINE_CHART;
    this.options = kDEFAULT_OPTIONS;
+   this.functions = new GraphicalFunctions();
 }
 /*------------------------------------------------------------------------------
 
@@ -136,6 +138,7 @@ public ChartGWT(
    this.type =
       cols.length < 3
          ? ChartGWT.kCHART_LINE_CHART : ChartGWT.kCHART_SURFACE_CHART;
+   functions = new GraphicalFunctions();
 }
 /*------------------------------------------------------------------------------
 
@@ -615,23 +618,23 @@ public void graphicalFunctions(String option) {//TODO
    boolean changed = false;
 
    if (option.equals(kGRAPHICAL_BESTFIT)) {
-      //createLineOfBestFit();
+      functions.createLineOfBestFit();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_CORRELATION)) {
-      //calculateCorrelation();
+      functions.calculateCorrelation();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_CROSS_SECTIONS)) {
-      //createCrossSectionHandler
+      functions.createCrossSectionHandler();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_FUNCTIONS)) {
-      //createFunctions
+      functions.createFunctions();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {
-      //createTransformationsHandler
+      functions.createTransformationsHandler();
       changed = true;
    }
    if (changed){
