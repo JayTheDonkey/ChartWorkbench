@@ -17,9 +17,9 @@ notes:
                            All rights reserved.
 
 ==============================================================================*/
-                                       // package ----------------------------//
+// package ----------------------------//
 package org.marinespacestation.project.client;
-                                       // imports ----------------------------//
+// imports ----------------------------//
 import com.giavaneers.util.gwt.GvLoggerGWT;
 import com.giavaneers.util.logger.GvLoggerKit.ILogger;
 import com.google.gwt.core.client.EntryPoint;
@@ -31,401 +31,397 @@ import com.google.gwt.user.client.EventListener;
 import org.marinespacestation.project.client.DragDropGWT.IDropFileListener;
 import org.marinespacestation.project.client.MediaGWT.IMediaChangeListener;
 
-                                       // ChartWorkbench =====================//
+// ChartWorkbench =====================//
 public class ChartWorkbench
-   implements EntryPoint, IDropFileListener, IMediaChangeListener
+        implements EntryPoint, IDropFileListener, IMediaChangeListener
 {
-                                       // class constants --------------------//
-private static final ILogger kLOGGER =
-   GvLoggerGWT.newInstance(ChartWorkbench.class.getName());
+   // class constants --------------------//
+   private static final ILogger kLOGGER =
+           GvLoggerGWT.newInstance(ChartWorkbench.class.getName());
 
-                                       // class variables                     //
-protected static boolean bEditMode;    // edit mode                           //
-                                       // public instance variables ----------//
-                                       // (none)                              //
-                                       // protected instance variables -------//
-protected String         sectionText;  // section text                        //
-                                       // private instance variables ---------//
-                                       // (none)                              //
+   // class variables                     //
+   protected static boolean bEditMode;    // edit mode                           //
+   // public instance variables ----------//
+   // (none)                              //
+   // protected instance variables -------//
+   protected String         sectionText;  // section text                        //
+   // private instance variables ---------//
+   // (none)                              //
 /*------------------------------------------------------------------------------
 
 @name       ChartWorkbench - constructor
                                                                               */
-                                                                             /**
-            Constructor
+   /**
+    Constructor
 
-@return     An instance of ChartWorkbench if successful.
+    @return     An instance of ChartWorkbench if successful.
 
-@history    Thu Dec 27, 2012 10:30:00 (Giavaneers - LBM) created
+    @history    Thu Dec 27, 2012 10:30:00 (Giavaneers - LBM) created
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public ChartWorkbench()
-{
-   this.bEditMode = true;
-}
+   public ChartWorkbench()
+   {
+      this.bEditMode = true;
+   }
 /*------------------------------------------------------------------------------
 
 @name       addChartToSection - add chart to section
                                                                               */
-                                                                             /**
-            Add chart to section
+   /**
+    Add chart to section
 
-@return     void
+    @return     void
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
+    @notes
 
-                                                                              */
+    */
 //------------------------------------------------------------------------------
-public void addChartToSection(
-   ChartGWT chartDsc,
-   Element  sectionElem)
-{
-                                       // save original section text          //
-   if (sectionText == null)
+   public void addChartToSection(
+           ChartGWT chartDsc,
+           Element  sectionElem)
    {
-      sectionText = sectionElem.getInnerText();
+      // save original section text          //
+      if (sectionText == null)
+      {
+         sectionText = sectionElem.getInnerText();
+      }
+
+      String chartContainerId   = ChartGWT.createChartContainerId(0, 0);
+      String chartPlaceholderId =
+              chartContainerId.replace("chartWidget","chartPlaceholder");
+
+      String mediaHTML =
+              "<div data-brackets-id='67' id='" + chartContainerId
+                      + "' class='charts-widget top-buffer-20 bottom-buffer-20'>"
+                      + "   <div class='chartWithOverlay'>"
+                      + "      <div id='" + chartPlaceholderId + "'></div>"
+                      + "   </div>"
+                      + "</div>";
+
+      addMediaToSection(chartDsc, mediaHTML, sectionElem);
    }
-
-   String chartContainerId =
-      "chartWidgetSection"
-         + chartDsc.url.substring(chartDsc.url.lastIndexOf("/") + 1);
-
-   String chartPlaceholderId =
-      chartContainerId.replace("chartWidget","chartPlaceholder");
-
-   String mediaHTML =
-      "<div data-brackets-id='67' id='" + chartContainerId
-    + "' class='charts-widget top-buffer-20 bottom-buffer-20'>"
-    + "   <div class='chartWithOverlay'>"
-    + "      <div id='" + chartPlaceholderId + "'></div>"
-    + "   </div>"
-    + "</div>";
-
-   addMediaToSection(chartDsc, mediaHTML, sectionElem);
-}
 /*------------------------------------------------------------------------------
 
 @name       addDragDropHandlers - add drag drop handlers
                                                                               */
-                                                                             /**
-            Add drag drop handlers
+   /**
+    Add drag drop handlers
 
-@return     void
+    @return     void
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public void addDragDropHandlers()
-{
-   Element[] targets = {Document.get().getElementById("section")};
+   public void addDragDropHandlers()
+   {
+      Element[] targets = {Document.get().getElementById("section")};
 
-   DragDropGWT dragDrop = new DragDropGWT();
-   dragDrop.addDragDropTargets(targets);
-   dragDrop.addDropFileListener(this);
-}
+      DragDropGWT dragDrop = new DragDropGWT();
+      dragDrop.addDragDropTargets(targets);
+      dragDrop.addDropFileListener(this);
+   }
 /*------------------------------------------------------------------------------
 
 @name       addMediaToSection - add media to section
                                                                               */
-                                                                             /**
-            Add media to section
+   /**
+    Add media to section
 
-@return     void
+    @return     void
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public static void addMediaToSection(
-   MediaGWT mediaGWT,
-   String   mediaHTML,
-   Element  sectionElem)
-{
-   mediaGWT.bEditMode = getEditMode();
+   public static void addMediaToSection(
+           MediaGWT mediaGWT,
+           String   mediaHTML,
+           Element  sectionElem)
+   {
+      mediaGWT.assignElementId(0, 0);
+      mediaGWT.bEditMode = getEditMode();
 
-   String chartContainerId =
-      mediaGWT instanceof ChartGWT
-         ? "chartWidgetSection"
-               + mediaGWT.url.substring(mediaGWT.url.lastIndexOf("/") + 1)
-         : null;
+      String mediaType =
+              MediaGWT.kMEDIA_TYPES_MAP.get(mediaGWT.url.substring(
+                      mediaGWT.url.lastIndexOf('.')));
 
-   int    idx       = mediaGWT.url.lastIndexOf('.');
-   String mediaType = MediaGWT.kMEDIA_TYPES_MAP.get(mediaGWT.url.substring(idx));
+      mediaGWT.addMediaToElement(
+              mediaType, mediaHTML, sectionElem, true);
 
-   mediaGWT.addMediaToElement(
-      mediaType, mediaHTML, sectionElem, chartContainerId, true);
-
-   mediaGWT.addMediaToElement(
-      mediaType, mediaHTML, sectionElem, chartContainerId, false);
-}
+      mediaGWT.addMediaToElement(
+              mediaType, mediaHTML, sectionElem, false);
+   }
 /*------------------------------------------------------------------------------
 
 @name       createMedia - create media
                                                                               */
-                                                                             /**
-            Create media
+   /**
+    Create media
 
-@return     void
+    @return     void
 
-@param      sectionIdx     section number
+    @param      sectionIdx     section number
 
-@history    Thu Jun 13, 2013 10:30:00 (Giavaneers - LBM) created
+    @history    Thu Jun 13, 2013 10:30:00 (Giavaneers - LBM) created
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public MediaGWT createMedia(
-   String     resourceName,
-   Uint8Array fileBytes)
-   throws     Exception
-{
-   int idx = resourceName.lastIndexOf('.');
-   if (idx < 0)
+   public MediaGWT createMedia(
+           String     resourceName,
+           Uint8Array fileBytes)
+           throws     Exception
    {
-      throw new IllegalArgumentException(
-         "mediaDsc format unknown: " + resourceName);
-   }
-   String type = MediaGWT.kMEDIA_TYPES_MAP.get(resourceName.substring(idx));
-   if (type == null)
-   {
-      throw new IllegalArgumentException(
-         "mediaDsc type unknown: " + resourceName);
-   }
+      int idx = resourceName.lastIndexOf('.');
+      if (idx < 0)
+      {
+         throw new IllegalArgumentException(
+                 "mediaDsc format unknown: " + resourceName);
+      }
+      String type = MediaGWT.kMEDIA_TYPES_MAP.get(resourceName.substring(idx));
+      if (type == null)
+      {
+         throw new IllegalArgumentException(
+                 "mediaDsc type unknown: " + resourceName);
+      }
 
-   MediaGWT addDsc = null;
-   if ("spreadsheet".equals(type))
-   {
-      addDsc = new ChartGWT(resourceName, fileBytes);
+      MediaGWT addDsc = null;
+      if ("spreadsheet".equals(type))
+      {
+         addDsc = new ChartGWT(resourceName, fileBytes);
+      }
+      else
+      {
+         addDsc     = new MediaGWT();
+         addDsc.url = resourceName;
+      }
+      return(addDsc);
    }
-   else
-   {
-      addDsc     = new MediaGWT();
-      addDsc.url = resourceName;
-   }
-   return(addDsc);
-}
 /*------------------------------------------------------------------------------
 
 @name       dropFileHandler - drop file handler
                                                                               */
-                                                                             /**
-            Drop file handler
+   /**
+    Drop file handler
 
-@return     void
+    @return     void
 
-@param      dropDivId      drop div id
-@param      filename       drop filename
-@param      fileType       drop file type
-@param      fileBytes      drop file contents
+    @param      dropElementId     drop element id
+    @param      filename          drop filename
+    @param      fileType          drop file type
+    @param      fileBytes         drop file contents
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public void dropFileHandler(
-   String           dropDivId,
-   String           filename,
-   String           fileType,
-   final Uint8Array fileBytes)
-{
-   String mediaType =
-      "text/csv".equals(fileType)
-         ? "csv" : fileType.substring(0, fileType.indexOf('/'));
-
-   kLOGGER.logInfo("ChartWorkbench.dropFileHandler(): dropped " + mediaType);
-
-   try
+   public void dropFileHandler(
+           String           dropElementId,
+           String           filename,
+           String           fileType,
+           final Uint8Array fileBytes)
    {
-      Element  section  = Document.get().getElementById("section");
-      MediaGWT mediaDsc = createMedia(filename, fileBytes);
-      if (mediaDsc instanceof ChartGWT)
-      {
-         addChartToSection((ChartGWT)mediaDsc, section);
+      String mediaType =
+              "text/csv".equals(fileType)
+                      ? "csv" : fileType.substring(0, fileType.indexOf('/'));
 
-         if (mediaDsc != null)
+      kLOGGER.logInfo("ChartWorkbench.dropFileHandler(): dropped " + mediaType);
+
+      try
+      {
+         Element  section  = Document.get().getElementById("section");
+         MediaGWT mediaDsc = createMedia(filename, fileBytes);
+         if (mediaDsc instanceof ChartGWT)
          {
-            mediaDsc.addMediaChangeListener(ChartWorkbench.this);
+            addChartToSection((ChartGWT)mediaDsc, section);
+
+            if (mediaDsc != null)
+            {
+               mediaDsc.addMediaChangeListener(ChartWorkbench.this);
+            }
+
+            mediaDsc.addMediaEventHandlers();
+         }
+         else
+         {
+            kLOGGER.logWarning(
+                    "ChartWorkbench.dropFileHandler(): no support for " + mediaType);
          }
       }
-      else
+      catch(Exception e)
       {
-         kLOGGER.logWarning(
-            "ChartWorkbench.dropFileHandler(): no support for " + mediaType);
+         kLOGGER.logError(e);
       }
    }
-   catch(Exception e)
-   {
-      kLOGGER.logError(e);
-   }
-}
 /*------------------------------------------------------------------------------
 
 @name       getEditMode - get whether is edit mode
                                                                               */
-                                                                             /**
-            Get whether is edit mode
+   /**
+    Get whether is edit mode
 
-@return     true iff is edit mode
+    @return     true iff is edit mode
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public static boolean getEditMode()
-{
-   return(bEditMode);
-}
+   public static boolean getEditMode()
+   {
+      return(bEditMode);
+   }
 /*------------------------------------------------------------------------------
 
 @name       mediaChange - media change event handler
                                                                               */
-                                                                             /**
-            Media change event handler.
+   /**
+    Media change event handler.
 
-@return     void
+    @return     void
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
+    @notes
 
-                                                                              */
+    */
 //------------------------------------------------------------------------------
-public void mediaChange(
-   MediaGWT media,
-   boolean  bRemove)
-{
-   if (!bRemove)
+   public void mediaChange(
+           MediaGWT media,
+           boolean  bRemove)
    {
-      renderSection((ChartGWT)media);
+      if (!bRemove)
+      {
+         renderSection((ChartGWT)media);
+      }
    }
-}
 /*------------------------------------------------------------------------------
 
 @name       onModuleLoad - entry point method
                                                                               */
-                                                                             /**
-            Entry point method
+   /**
+    Entry point method
 
-@return     void
+    @return     void
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-public void onModuleLoad()
-{
-                                       // add clickhandler to edit button     //
-   Element btnEditElement = Document.get().getElementById("editModeButton");
-   if (btnEditElement != null)
+   public void onModuleLoad()
    {
-      Event.sinkEvents(btnEditElement, Event.ONCLICK);
-      Event.setEventListener(btnEditElement, new ElementClickHandler(btnEditElement));
-   }
+      // add clickhandler to edit button     //
+      Element btnEditElement = Document.get().getElementById("editModeButton");
+      if (btnEditElement != null)
+      {
+         Event.sinkEvents(btnEditElement, Event.ONCLICK);
+         Event.setEventListener(btnEditElement, new ElementClickHandler(btnEditElement));
+      }
 
-   addDragDropHandlers();
-}
+      addDragDropHandlers();
+   }
 /*------------------------------------------------------------------------------
 
 @name       renderSection - render section
                                                                               */
-                                                                             /**
-            Render section
+   /**
+    Render section
 
-@return     void
+    @return     void
 
-@history    Mon Aug 29, 2016 13:00:00 (LBM) created.
+    @history    Mon Aug 29, 2016 13:00:00 (LBM) created.
 
-@notes
-                                                                              */
+    @notes
+    */
 //------------------------------------------------------------------------------
-protected void renderSection(
-   ChartGWT chartDsc)
-{
-   Element section = Document.get().getElementById("section");
-   section.setInnerText(sectionText);
-   addChartToSection(chartDsc, section);
-}
-/*==============================================================================
+   protected void renderSection(
+           ChartGWT chartDsc)
+   {
+      Element section = Document.get().getElementById("section");
+      section.setInnerText(sectionText);
+      addChartToSection(chartDsc, section);
+      chartDsc.addMediaEventHandlers();
+   }
+   /*==============================================================================
 
-name:       ElementClickHandler - element click handler
+   name:       ElementClickHandler - element click handler
 
-purpose:    element click handler
+   purpose:    element click handler
 
-history:    Fri Dec 02, 2016 10:30:00 (Giavaneers - LBM) created
+   history:    Fri Dec 02, 2016 10:30:00 (Giavaneers - LBM) created
 
-notes:
+   notes:
 
-==============================================================================*/
-protected class ElementClickHandler implements EventListener
-{
-                                       // class variables ------------------- //
-                                       // (none)                              //
-                                       // public instance variables --------- //
-                                       // (none)                              //
-                                       // protected instance variables ------ //
-protected Element source;              // source element                      //
-                                       // private instance variables -------- //
-                                       // (none)                              //
+   ==============================================================================*/
+   protected class ElementClickHandler implements EventListener
+   {
+      // class variables ------------------- //
+      // (none)                              //
+      // public instance variables --------- //
+      // (none)                              //
+      // protected instance variables ------ //
+      protected Element source;              // source element                      //
+      // private instance variables -------- //
+      // (none)                              //
 /*------------------------------------------------------------------------------
 
 @name       ElementClickHandler - constructor
                                                                               */
-                                                                             /**
-            Constructor
+      /**
+       Constructor
 
-@return     An instance of LoginPanel if successful.
+       @return     An instance of LoginPanel if successful.
 
-@history    Thu Dec 27, 2012 10:30:00 (Giavaneers - LBM) created
+       @history    Thu Dec 27, 2012 10:30:00 (Giavaneers - LBM) created
 
-@notes
-                                                                              */
+       @notes
+       */
 //------------------------------------------------------------------------------
-public ElementClickHandler(
-   Element source)
-{
-   this.source = source;
-}
+      public ElementClickHandler(
+              Element source)
+      {
+         this.source = source;
+      }
 /*------------------------------------------------------------------------------
 
 @name       onBrowserEvent - browser event handler
                                                                               */
-                                                                             /**
-            Browser event handler.
+      /**
+       Browser event handler.
 
-@return     void
+       @return     void
 
-@history    Fri Dec 02, 2016 10:30:00 (Giavaneers - SeanQ) created
+       @history    Fri Dec 02, 2016 10:30:00 (Giavaneers - SeanQ) created
 
-@notes
+       @notes
 
-                                                                              */
+       */
 //------------------------------------------------------------------------------
-public void onBrowserEvent(
-   Event event)
-{
-   switch(event.getTypeInt())
-   {
-      case Event.ONCLICK:
+      public void onBrowserEvent(
+              Event event)
       {
-         String sourceId = source.getId();
-
-			if ("editModeButton".equals(sourceId))
+         switch(event.getTypeInt())
          {
-            bEditMode = !bEditMode;
+            case Event.ONCLICK:
+            {
+               String sourceId = source.getId();
+
+               if ("editModeButton".equals(sourceId))
+               {
+                  bEditMode = !bEditMode;
+               }
+               break;
+            }
          }
-         break;
       }
-   }
-}
-}//====================================// ElementClickHandler ================//
+   }//====================================// ElementClickHandler ================//
 }//====================================// end class ChartWorkbench -----------//
