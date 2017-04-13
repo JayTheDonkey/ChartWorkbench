@@ -617,23 +617,33 @@ public void graphicalFunctions(String option) {//TODO
 
    boolean changed = false;
 
-   if (option.equals(kGRAPHICAL_BESTFIT)) {
-      functions.createLineOfBestFit();
+   if (option.equals(kGRAPHICAL_BESTFIT)) {//if selected while active, should turn off
+      if (functions.bestFitActive){
+         functions.removeLineOfBestFit();
+      }
+      else {
+         functions.createLineOfBestFit();
+      }
       changed = true;
    }
-   else if (option.equals(kGRAPHICAL_CORRELATION)) {
+   else if (option.equals(kGRAPHICAL_CORRELATION)) {//if selected while active, should be able to remove previous entries
       functions.calculateCorrelation();
       changed = true;
    }
-   else if (option.equals(kGRAPHICAL_CROSS_SECTIONS)) {
-      functions.createCrossSectionHandler();
+   else if (option.equals(kGRAPHICAL_CROSS_SECTIONS)) {//if selected while active, should turn off
+      if (functions.crossSectionsActive){
+         functions.removeCrossSections();
+      }
+      else {
+         functions.createCrossSectionHandler();
+      }
       changed = true;
    }
-   else if (option.equals(kGRAPHICAL_FUNCTIONS)) {
+   else if (option.equals(kGRAPHICAL_FUNCTIONS)) {//if selected while active, should be able to remove previous entries
       functions.createFunctions();
       changed = true;
    }
-   else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {
+   else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {//if selected while active, should be able to remove previous entries
       functions.createTransformationsHandler();
       changed = true;
    }
