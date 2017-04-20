@@ -1,7 +1,9 @@
 package org.marinespacestation.project.client;
 
 
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.*;
 
 public class GraphicalFunctions {
 
@@ -9,11 +11,46 @@ public class GraphicalFunctions {
 
     public void createLineOfBestFit(){
 
-        DialogBox dialog = new DialogBox(true);
-        dialog.setSize("100","50");
-        dialog.setPopupPosition(400, 500);
+        final DialogBox dialog = new DialogBox(true);
+        dialog.setPopupPosition(400, 300);
         dialog.setText("Test BOI");
-        dialog.show();
+        dialog.setAnimationEnabled(true);
+        dialog.setGlassEnabled(true);
+
+        Button ok = new Button("OK");
+        ok.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
+
+        Button ko = new Button("KO!");
+        ko.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
+
+        Label label = new Label("Some sample text");
+
+        VerticalPanel panel = new VerticalPanel();
+        panel.setHeight("100");
+        panel.setWidth("300");
+        panel.setSpacing(10);
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        panel.add(label);
+
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setHeight("100");
+        horizontalPanel.setWidth("300");
+        horizontalPanel.setSpacing(50);
+        horizontalPanel.addStyleName("horizontalPanel");
+        horizontalPanel.add(ok);
+        horizontalPanel.add(ko);
+        panel.add(horizontalPanel);
+
+        dialog.setWidget(panel);
+        dialog.center();
         bestFitActive = true;
     }
 
