@@ -428,8 +428,12 @@ body {
     margin-right: 10px;
     padding: 5px 7px;
     background: url(/images/hborder.png) repeat-x 0px -2077px;
-    border: 0px;
-    border-radius: 3px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+.listBoxPanel .gwt-ListBox {
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 .verticalPanel .gwt-Label {
     margin-bottom: 5px;

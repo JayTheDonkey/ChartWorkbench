@@ -622,7 +622,7 @@ public void graphicalFunctions(String option) {//TODO
          functions.removeLineOfBestFit();
       }
       else {
-         functions.createLineOfBestFit();
+         functions.createLineOfBestFitDialog();
       }
       changed = true;
    }
