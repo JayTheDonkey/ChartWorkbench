@@ -423,9 +423,16 @@ body {
     height: 12px;
     overflow: hidden;
 }
-.horizontalPanel .gwt-Button {
-    margin-left:  10px;
+.buttonPanel .gwt-Button {
+    margin-left: 10px;
     margin-right: 10px;
+    padding: 5px 7px;
+    background: url(/images/hborder.png) repeat-x 0px -2077px;
+    border: 0px;
+    border-radius: 3px;
+}
+.verticalPanel .gwt-Label {
+    margin-bottom: 5px;
 }
 
 /*MISCELLANEOUS*/
