@@ -613,7 +613,7 @@ public void removeGraphicalMenuHandler(){
     @notes
                                                                               */
 //------------------------------------------------------------------------------
-public void graphicalFunctions(String option) {//TODO
+public void graphicalFunctions(String option) {
 
    boolean changed = false;
 
@@ -627,7 +627,7 @@ public void graphicalFunctions(String option) {//TODO
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_CORRELATION)) {//if selected while active, should be able to remove previous entries
-      functions.calculateCorrelation();
+      functions.createCorrelationDialog();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_CROSS_SECTIONS)) {//if selected while active, should turn off
