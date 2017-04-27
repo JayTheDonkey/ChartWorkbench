@@ -779,69 +779,13 @@ protected static native void draw2DChartNative(
             String           chartType,
             JavaScriptObject options,
             boolean          bEditMode)
-/*-{// Declare a unique namespace.
-    var graphical = {};
-
-// Class constructor. Parameter container is a DOM elementon the client that
-// that will contain the chart.
-    graphical.MyTable = function(container) {
-        this.containerElement = container;
-    }
-
-// Main drawing logic.
-// Parameters:
-//   data is data to display, type google.visualization.DataTable.
-//   options is a name/value map of options. Our example takes one option.
-    graphical.MyTable.prototype.draw = function(data, options) {
-
-        // Create an HTML table
-        var showLineNumber = options.showLineNumber; // Boolean configuration option.
-
-        var html = [];
-        html.push('<table border="1">');
-
-        // Header row
-        html.push('<tr>');
-        if (showLineNumber) {
-            html.push('<th>Seq</th>');
-        }
-        for (var col = 0; col < data.getNumberOfColumns(); col++) {
-            html.push('<th>' + this.escapeHtml(data.getColumnLabel(col)) + '</th>');
-        }
-        html.push('</tr>');
-
-        for (var row = 0; row < data.getNumberOfRows(); row++) {
-            html.push('<tr>');
-            if (showLineNumber) {
-                html.push('<td align="right">', (row + 1), '</td>');
-            }
-
-            for (var col = 0; col < data.getNumberOfColumns(); col++) {
-                html.push(data.getColumnType(col) == 'number' ? '<td align="right">' : '<td>');
-                html.push(this.escapeHtml(data.getFormattedValue(row, col)));
-                html.push('</td>');
-            }
-            html.push('</tr>');
-        }
-        html.push('</table>');
-
-        this.containerElement.innerHTML = html.join('');
-    }
-
-// Utility function to escape HTML special characters
-    graphical.MyTable.prototype.escapeHtml = function(text) {
-        if (text == null)
-            return '';
-        return text.replace(/&/g, '&').replace(/</g, '<')
-            .replace(/>/g, '>').replace(/"/g, '"');
-    }
-
+/*-{
     function drawGraphicalChart(chartData)
     {
         var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
         var data         = new $wnd.google.visualization.arrayToDataTable(arrayData);
         var chartWrapper =
-            new $wnd.graphical.ChartWrapper(
+            new $wnd.google.visualization.ChartWrapper(
                 {
                     chartType:   chartType,
                     containerId: chartContainerId,
@@ -849,14 +793,8 @@ protected static native void draw2DChartNative(
                     options:     options
                 });
 
-        // Instantiate our table object.
-        var vis = new graphical.MyTable(document.getElementById('mydiv'));
-
-        // Draw our table with the data we created locally.
-        vis.draw(data, {showLineNumber: true});
+        chartWrapper.draw();
     }
-
-}
     if (localChartData == null)
     {
         $wnd.$.get(url, function(chartData)
@@ -867,8 +805,7 @@ protected static native void draw2DChartNative(
     else
     {
         drawGraphicalChart(localChartData);
-
-
+    }
 }-*/;
 /*------------------------------------------------------------------------------
 
