@@ -5,9 +5,37 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 
+import java.util.ArrayList;
+
 public class GraphicalFunctions {
 
     public boolean bestFitActive, crossSectionsActive;
+
+    public String [][] data;
+
+    public GraphicalFunctions(String data){
+
+        String   row   = data.substring(0, data.indexOf('\n'));
+        String[] cols  = row.split(",");
+        row.replace("/n",",");
+        String[] values = row.split(",");
+        ArrayList<ArrayList<String>> dataList = new ArrayList<>();
+        for (int i=0;i<cols.length;i++){
+            ArrayList<String> axes = new ArrayList<>();
+            int index = i;
+            while (index < values.length){
+                axes.add(values[index]);
+                index += cols.length;
+            }
+            dataList.add(axes);
+        }
+        this.data = new String [dataList.size()][];
+        for (int i = 0; i < dataList.size(); i++) {
+            ArrayList<String> rows = dataList.get(i);
+            this.data[i] = rows.toArray(new String[rows.size()]);
+        }
+
+    }
 
     public void createLineOfBestFitDialog(){
 
