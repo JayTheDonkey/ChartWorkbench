@@ -106,7 +106,7 @@ public ChartGWT()
 {
    this.type    = kCHART_LINE_CHART;
    this.options = kDEFAULT_OPTIONS;
-   this.functions = new GraphicalFunctions(data);
+   this.functions = new GraphicalFunctions();
 }
 /*------------------------------------------------------------------------------
 
@@ -138,7 +138,7 @@ public ChartGWT(
    this.type =
       cols.length < 3
          ? ChartGWT.kCHART_LINE_CHART : ChartGWT.kCHART_SURFACE_CHART;
-   functions = new GraphicalFunctions(data);
+   functions = new GraphicalFunctions();
 }
 /*------------------------------------------------------------------------------
 

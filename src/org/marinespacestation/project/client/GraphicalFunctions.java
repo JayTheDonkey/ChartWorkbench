@@ -15,11 +15,11 @@ public class GraphicalFunctions {
 
     public String [][] data;
 
-    public GraphicalFunctions(String data){
+    public GraphicalFunctions(){ //fixme: this causes the chart not to load
 
-        String   row   = data.substring(0, data.indexOf('\n'));
+        /*String   row   = data.substring(0, data.indexOf('\n'));
         String[] cols  = row.split(",");
-        row.replace("/n",",");
+        row.replace("\n",",");
         String[] values = row.split(",");
         ArrayList<ArrayList<String>> dataList = new ArrayList<>();
         for (int i=0;i<cols.length;i++){
@@ -35,7 +35,7 @@ public class GraphicalFunctions {
         for (int i = 0; i < dataList.size(); i++) {
             ArrayList<String> rows = dataList.get(i);
             this.data[i] = rows.toArray(new String[rows.size()]);
-        }
+        }*/
 
     }
 
@@ -49,7 +49,7 @@ public class GraphicalFunctions {
 
         Label label = new Label("Choose two axes");
         Label axis1 = new Label("1st axis:");
-        final Label axis2 = new Label("2nd axis:");
+        Label axis2 = new Label("2nd axis:");
 
         VerticalPanel panel = new VerticalPanel();
         panel.setStyleName("verticalPanel");
@@ -141,7 +141,7 @@ public class GraphicalFunctions {
         Label label = new Label("Choose two axes to find the coefficient");
         Label label2 = new Label("of correlation between their data");
         Label axis1 = new Label("1st axis:");
-        final Label axis2 = new Label("2nd axis:");
+        Label axis2 = new Label("2nd axis:");
 
         VerticalPanel panel = new VerticalPanel();
         panel.setStyleName("verticalPanel");
@@ -206,7 +206,7 @@ public class GraphicalFunctions {
         dialog.setWidget(panel);
         dialog.center();
     }
-
+//fixme: this shit doesn't work
     public void calculateCorrelation(int a, int b){//both data sets should have same length
         /* Array Formatting */
         boolean removeFirst = false;
@@ -224,24 +224,40 @@ public class GraphicalFunctions {
         }
         int[] axisA = new int[tempA.size()];
         int[] axisB = new int[tempB.size()];
-        for (int i=0;i<axisA.length;i++){ //fill axes arrays with ints
-            axisA[i] = Integer.parseInt(tempA.get(i));
-            axisB[i] = Integer.parseInt(tempB.get(i));
+        try {
+            for (int i = 0; i < axisA.length; i++) { //fill axes arrays with ints
+                axisA[i] = Integer.parseInt(tempA.get(i));
+                axisB[i] = Integer.parseInt(tempB.get(i));
+            }
+            /* Calculate Correlation */
+            //calculate means of the data sets
+            double meanA = 0;
+            double meanB = 0;
+            for (int i = 0; i < axisA.length; i++) {
+                meanA += axisA[i];
+                meanB += axisB[i];
+            }
+            meanA = meanA / axisA.length;
+            meanB = meanB / axisB.length;
+            //calculate the top half of the correlation equation
+            double topValue = 0;
+            for (int i = 0; i < axisA.length; i++) {
+                topValue += (axisA[i] - meanA) * (axisB[i] - meanB);
+            }
+            //calculate the bottom half
+            double bottomA = 0;
+            double bottomB = 0;
+            for (int i = 0; i < axisA.length; i++) {
+                bottomA += Math.pow((axisA[i] - meanA), 2);
+                bottomB += Math.pow((axisB[i] - meanB), 2);
+            }
+            bottomA = Math.pow(bottomA, 1 / 2);
+            bottomB = Math.pow(bottomB, 1 / 2);
+            //put it all together
+            double correlation = topValue / (bottomA * bottomB);
         }
-        /* Calculate Correlation */
-        //calculate means of the data sets
-        int meanA = 0;
-        int meanB = 0;
-        for (int i=0;i<axisA.length;i++){
-            meanA += axisA[i];
-            meanB += axisB[i];
-        }
-        meanA = meanA/axisA.length;
-        meanB = meanB/axisB.length;
-        //calculate the top half of the correlation equation
-        int topValue = 0;
-        for (int i=0;i<axisA.length;i++){
-            topValue += (axisA[i]-meanA)*(axisB[i]-meanB);
+        catch (NumberFormatException e){
+            createErrorMessage("One or more of the axes is a data set of strings");
         }
     }
 
@@ -258,6 +274,49 @@ public class GraphicalFunctions {
     }
 
     public void createTransformationsHandler(){
+
+    }
+    public void createErrorMessage(String message){
+        final DialogBox dialog = new DialogBox(false);
+        dialog.setPopupPosition(400, 300);
+        dialog.setText("Error");
+        dialog.setAnimationEnabled(true);
+        dialog.setGlassEnabled(true);
+
+        Label label = new Label(message);
+
+        VerticalPanel panel = new VerticalPanel();
+        panel.setStyleName("verticalPanel");
+        panel.setHeight("100");
+        panel.setWidth("300");
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        panel.add(label);
+
+        Button ok = new Button("Ok");
+        ok.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
+
+        Button cancel = new Button("Cancel");
+        cancel.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
+
+        HorizontalPanel buttonLayer = new HorizontalPanel();
+        buttonLayer.setHeight("100");
+        buttonLayer.setWidth("300");
+        buttonLayer.addStyleName("buttonPanel");
+        buttonLayer.add(ok);
+        buttonLayer.add(cancel);
+
+        panel.add(buttonLayer);
+
+        dialog.setWidget(panel);
+        dialog.center();
 
     }
 }
