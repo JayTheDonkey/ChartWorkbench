@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GraphicalFunctions {
 
@@ -205,8 +207,42 @@ public class GraphicalFunctions {
         dialog.center();
     }
 
-    public void calculateCorrelation(int a, int b){
-
+    public void calculateCorrelation(int a, int b){//both data sets should have same length
+        /* Array Formatting */
+        boolean removeFirst = false;
+        List<String> tempA = Arrays.asList(data[a]);
+        List<String> tempB = Arrays.asList(data[b]);
+        try {//the logic here is that the axes might have titles. this checks for those and removes them
+            Integer.parseInt(tempA.get(0));
+        }
+        catch (NumberFormatException e){
+            removeFirst = true;
+        }
+        if (removeFirst){
+            tempA.remove(0);
+            tempB.remove(0);
+        }
+        int[] axisA = new int[tempA.size()];
+        int[] axisB = new int[tempB.size()];
+        for (int i=0;i<axisA.length;i++){ //fill axes arrays with ints
+            axisA[i] = Integer.parseInt(tempA.get(i));
+            axisB[i] = Integer.parseInt(tempB.get(i));
+        }
+        /* Calculate Correlation */
+        //calculate means of the data sets
+        int meanA = 0;
+        int meanB = 0;
+        for (int i=0;i<axisA.length;i++){
+            meanA += axisA[i];
+            meanB += axisB[i];
+        }
+        meanA = meanA/axisA.length;
+        meanB = meanB/axisB.length;
+        //calculate the top half of the correlation equation
+        int topValue = 0;
+        for (int i=0;i<axisA.length;i++){
+            topValue += (axisA[i]-meanA)*(axisB[i]-meanB);
+        }
     }
 
     public void createCrossSectionHandler(){
