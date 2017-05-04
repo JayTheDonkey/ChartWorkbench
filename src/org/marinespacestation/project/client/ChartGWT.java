@@ -783,15 +783,29 @@ protected static native void draw2DChartNative(
     function drawGraphicalChart(chartData)
     {
         var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
+
+        //HERE IS THE PART WHERE I WILL FUCK WITH THE ARRAY
+
         var data         = new $wnd.google.visualization.arrayToDataTable(arrayData);
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
                 {
-                    chartType:   chartType,
+                    chartType:   "ScatterChart",
                     containerId: chartContainerId,
                     dataTable:   data,
                     options:     options
                 });
+        options = {
+            title: "This is the title",
+            hAxis: {title: "X-Axis", minValue: 0, maxValue: 15},
+            vAxis: {title: "Y-Axis", minValue: 0, maxValue: 15},
+            legend: "none",
+            series: {
+                0: {pointSize: 4},
+                1: {pointSize: 10},
+                2: {pointSize: 50}
+            }
+        };
 
         chartWrapper.draw();
     }
@@ -807,6 +821,26 @@ protected static native void draw2DChartNative(
         drawGraphicalChart(localChartData);
     }
 }-*/;
+/*
+Make different if/else statements that switch btwn 1-4 dim graphs, then compute accordingly
+1 dim, make the x-axis be index
+2 dim, just normal scatter plot
+3 dim, size variation
+4 dim, color variation
+
+focus on the "options" variable =>
+
+var options = {
+   title: 'This is the title',
+   hAxis: {title: 'X-Axis', minValue: 0, maxValue: 15},
+   vAxis: {title: 'Y-Axis', minValue: 0, maxValue: 15},
+   legend: 'none'
+};
+
+***find out how to set limitless point settings in js b/c we need to customize the size/color of each one separately***
+====>>>> The point settings stuff are object literals and can be modified with square brackets and for loops :)
+   =======> check out the favorited link
+*/
 /*------------------------------------------------------------------------------
 
 @name       draw3DChartNative - render the specified 3D chart
