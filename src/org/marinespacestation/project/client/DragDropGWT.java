@@ -182,7 +182,7 @@ public void dropEventHandler(
    DropEvent e,
    Label     div)
 {
-   dropEventHandlerNative(this, e.getNativeEvent());
+   dropEventHandlerNative(this, div.getElement().getId(), e.getNativeEvent());
    div.getElement().removeClassName("drop-hover-border");
 }
 /*------------------------------------------------------------------------------
@@ -201,33 +201,79 @@ public void dropEventHandler(
 //------------------------------------------------------------------------------
 protected static native void dropEventHandlerNative(
    DragDropGWT instance,
+   String      dropDivId,
    NativeEvent ev)
 /*-{
    ev.preventDefault();
-   var dropDiv = $wnd.$(ev.target).closest(".droppable");
-   if (dropDiv == null)
+
+   if (dropDivId == null)
    {
       alert("This drop procedure is not supported");
       return;
    }
-                                    // process only first File object      //
+                                       // process only first File object      //
    var file = ev.dataTransfer.files[0];
-   if (file.type.indexOf("image/") < 0
-         && file.type.indexOf("audio/") < 0
-         && file.type.indexOf("video/") < 0
-         && file.type.indexOf("text/")  < 0)
+   var type = file.type;
+   if (type.length == 0)
+   {
+                                       // windows sometime reports empty type //
+      if (file.name.toLowerCase().endsWith(".jpg"))
+      {
+         type = "image/jpeg";
+      }
+      else if (file.name.toLowerCase().endsWith(".jpeg"))
+      {
+         type = "image/jpeg";
+      }
+      else if (file.name.toLowerCase().endsWith(".png"))
+      {
+         type = "image/png";
+      }
+      else if (file.name.toLowerCase().endsWith(".mp3"))
+      {
+         type = "audio/mp3";
+      }
+      else if (file.name.toLowerCase().endsWith(".wav"))
+      {
+         type = "audio/wav";
+      }
+      else if (file.name.toLowerCase().endsWith(".mp4"))
+      {
+         type = "video/mp4";
+      }
+      else if (file.name.toLowerCase().endsWith(".m4v"))
+      {
+         type = "video/m4v";
+      }
+      else if (file.name.toLowerCase().endsWith(".csv"))
+      {
+         type = "text/csv";
+      }
+      else if (file.name.toLowerCase().endsWith("txt"))
+      {
+         type = "text/plain";
+      }
+   }
+   if (type.indexOf("image/") < 0
+         && type.indexOf("audio/") < 0
+         && type.indexOf("video/") < 0
+         && type.indexOf("text/")  < 0)
    {
       alert("This drop procedure is not supported");
       return;
    }
 
-   console.log("image drop: " + file.name + " (" + file.type + ")");
+   console.log("image drop: " + file.name + " (" + type + ")");
 
    var reader = new FileReader();
    reader.onload = function(event)
    {
+      var filename = file.name;
+      var filetype = type;
+      var data     = new Uint8Array(reader.result);
+
       instance.@org.marinespacestation.project.client.DragDropGWT::dropFileHandler(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/typedarrays/shared/Uint8Array;)(
-         dropDiv.attr("id"), file.name, file.type, new Uint8Array(reader.result));
+         dropDivId, filename, filetype, data);
    };
    reader.readAsArrayBuffer(file);
 }-*/;
@@ -315,11 +361,11 @@ protected interface IDropFileListener
 @notes
                                                                               */
 //------------------------------------------------------------------------------
-public void dropFileHandler(
-   String     dropDivId,
-   String     filename,
-   String     fileType,
-   Uint8Array fileBytes);
+void dropFileHandler(
+  String dropDivId,
+  String filename,
+  String fileType,
+  Uint8Array fileBytes);
 
 }//====================================// IDropFileListener ==================//
 }//====================================// end class DragDropGWT --------------//
