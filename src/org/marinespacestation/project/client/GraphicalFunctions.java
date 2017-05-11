@@ -1,6 +1,9 @@
 package org.marinespacestation.project.client;
 
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Text;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
@@ -17,7 +20,7 @@ public class GraphicalFunctions {
     public String [][] data;
     public String elementID;
 
-    public GraphicalFunctions(String dataStr){ //fixme: this causes the chart not to load
+    public GraphicalFunctions(String dataStr){
 
         String   row   = dataStr.substring(0, dataStr.indexOf('\n'));
         String[] cols  = row.split(",");
@@ -259,7 +262,10 @@ public class GraphicalFunctions {
             bottomB = Math.pow(bottomB, .5);
             //put it all together
             double correlation = topValue / (bottomA * bottomB);
-            createErrorMessage(Double.toString(correlation));
+            //attach to window
+            final Element mediaPanel = Document.get().getElementById(elementID);
+            Text correlationText = Document.get().createTextNode("Correlation: "+ Double.toString(correlation));
+            mediaPanel.appendChild(correlationText);
         }
         catch (NumberFormatException e){
             createErrorMessage("One or more of the axes is a data set of strings");
