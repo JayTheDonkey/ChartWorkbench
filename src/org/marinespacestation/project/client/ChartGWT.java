@@ -789,13 +789,16 @@ protected static native void draw2DChartNative(
         options = {
             hAxis: {title: "X-Axis"},
             vAxis: {title: "Y-Axis"},
-            curveType: "function",
-            pointSize: 80,
-            dataOpacity: .6,
+            pointSize: 5,
+            dataOpacity: .2,
+            pointShape: "triangle",
             colors: ['#E94D20', '#ECA403', '#63A74A',
                 '#15A0C8', '#4151A3', '#703593', '#981B48'],
-
+            series: {
+                0: {curveType: "function"}
+            }
         };
+        //  options.series["0"].curveType = "function";
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
                 {
