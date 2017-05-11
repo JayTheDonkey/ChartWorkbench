@@ -786,6 +786,13 @@ protected static native void draw2DChartNative(
         //HERE IS THE PART WHERE I WILL FUCK WITH THE ARRAY
 
         var data         = new $wnd.google.visualization.arrayToDataTable(arrayData);
+        options = {
+            hAxis: {title: "X-Axis"},
+            vAxis: {title: "Y-Axis"},
+            series: {
+                0: {pointSize: 40}
+            }
+        };
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
                 {
@@ -794,17 +801,6 @@ protected static native void draw2DChartNative(
                     dataTable:   data,
                     options:     options
                 });
-        options = {
-            title: "This is the title",
-            hAxis: {title: "X-Axis", minValue: 0, maxValue: 15},
-            vAxis: {title: "Y-Axis", minValue: 0, maxValue: 15},
-            legend: "none",
-            series: {
-                0: {pointSize: 4},
-                1: {pointSize: 10},
-                2: {pointSize: 50}
-            }
-        };
 
         chartWrapper.draw();
     }
@@ -1025,11 +1021,7 @@ public void render()
    else if (kCHART_GRAPHICAL_CHART.equals(type)) {
       graphicalMenuHandler(elementId);
       functions.updateElementID(elementId);
-      type = kCHART_SURFACE_CHART;
-      draw3DChartNative(chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
-      /*drawGraphicalChartNative(
-         chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
-         */
+      drawGraphicalChartNative(chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
    else
    {
