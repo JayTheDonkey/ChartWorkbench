@@ -106,7 +106,6 @@ public ChartGWT()
 {
    this.type    = kCHART_LINE_CHART;
    this.options = kDEFAULT_OPTIONS;
-   this.functions = new GraphicalFunctions();
 }
 /*------------------------------------------------------------------------------
 
@@ -138,7 +137,7 @@ public ChartGWT(
    this.type =
       cols.length < 3
          ? ChartGWT.kCHART_LINE_CHART : ChartGWT.kCHART_SURFACE_CHART;
-   functions = new GraphicalFunctions();
+   functions = new GraphicalFunctions(data);
 }
 /*------------------------------------------------------------------------------
 
@@ -1025,6 +1024,7 @@ public void render()
    }
    else if (kCHART_GRAPHICAL_CHART.equals(type)) {
       graphicalMenuHandler(elementId);
+      functions.updateElementID(elementId);
       type = kCHART_SURFACE_CHART;
       draw3DChartNative(chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
       /*drawGraphicalChartNative(

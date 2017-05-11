@@ -7,20 +7,22 @@ import com.google.gwt.user.client.ui.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
+
 
 public class GraphicalFunctions {
 
     public boolean bestFitActive, crossSectionsActive;
 
     public String [][] data;
+    public String elementID;
 
-    public GraphicalFunctions(){ //fixme: this causes the chart not to load
+    public GraphicalFunctions(String dataStr){ //fixme: this causes the chart not to load
 
-        /*String   row   = data.substring(0, data.indexOf('\n'));
+        String   row   = dataStr.substring(0, dataStr.indexOf('\n'));
         String[] cols  = row.split(",");
-        row.replace("\n",",");
-        String[] values = row.split(",");
+        dataStr = dataStr.replace("\n",",");
+        String[] values = dataStr.split(",");
         ArrayList<ArrayList<String>> dataList = new ArrayList<>();
         for (int i=0;i<cols.length;i++){
             ArrayList<String> axes = new ArrayList<>();
@@ -31,12 +33,15 @@ public class GraphicalFunctions {
             }
             dataList.add(axes);
         }
-        this.data = new String [dataList.size()][];
+        data = new String [dataList.size()][];
         for (int i = 0; i < dataList.size(); i++) {
             ArrayList<String> rows = dataList.get(i);
-            this.data[i] = rows.toArray(new String[rows.size()]);
-        }*/
+            data[i] = rows.toArray(new String[rows.size()]);
+        }
+    }
 
+    public void updateElementID(String mediaPanelID){
+        elementID = mediaPanelID;
     }
 
     public void createLineOfBestFitDialog(){
@@ -206,12 +211,11 @@ public class GraphicalFunctions {
         dialog.setWidget(panel);
         dialog.center();
     }
-//fixme: this shit doesn't work
     public void calculateCorrelation(int a, int b){//both data sets should have same length
         /* Array Formatting */
         boolean removeFirst = false;
-        List<String> tempA = Arrays.asList(data[a]);
-        List<String> tempB = Arrays.asList(data[b]);
+        LinkedList<String> tempA = new LinkedList<>(Arrays.asList(data[a]));
+        LinkedList<String> tempB = new LinkedList<>(Arrays.asList(data[b]));
         try {//the logic here is that the axes might have titles. this checks for those and removes them
             Integer.parseInt(tempA.get(0));
         }
@@ -225,7 +229,7 @@ public class GraphicalFunctions {
         int[] axisA = new int[tempA.size()];
         int[] axisB = new int[tempB.size()];
         try {
-            for (int i = 0; i < axisA.length; i++) { //fill axes arrays with ints
+            for (int i = 0; i < axisA.length; i++) { //parse axes into ints
                 axisA[i] = Integer.parseInt(tempA.get(i));
                 axisB[i] = Integer.parseInt(tempB.get(i));
             }
@@ -251,10 +255,11 @@ public class GraphicalFunctions {
                 bottomA += Math.pow((axisA[i] - meanA), 2);
                 bottomB += Math.pow((axisB[i] - meanB), 2);
             }
-            bottomA = Math.pow(bottomA, 1 / 2);
-            bottomB = Math.pow(bottomB, 1 / 2);
+            bottomA = Math.pow(bottomA, .5);
+            bottomB = Math.pow(bottomB, .5);
             //put it all together
             double correlation = topValue / (bottomA * bottomB);
+            createErrorMessage(Double.toString(correlation));
         }
         catch (NumberFormatException e){
             createErrorMessage("One or more of the axes is a data set of strings");
