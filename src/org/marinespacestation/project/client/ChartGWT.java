@@ -789,9 +789,12 @@ protected static native void draw2DChartNative(
         options = {
             hAxis: {title: "X-Axis"},
             vAxis: {title: "Y-Axis"},
-            series: {
-                0: {pointSize: 40}
-            }
+            curveType: "function",
+            pointSize: 80,
+            dataOpacity: .6,
+            colors: ['#E94D20', '#ECA403', '#63A74A',
+                '#15A0C8', '#4151A3', '#703593', '#981B48'],
+
         };
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
