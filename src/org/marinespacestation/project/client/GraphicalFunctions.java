@@ -248,21 +248,19 @@ public class GraphicalFunctions {
             meanB = meanB / axisB.length;
             //calculate the top half of the correlation equation
             double topValue = 0;
-            for (int i = 0; i < axisA.length; i++) {
-                topValue += (axisA[i] - meanA) * (axisB[i] - meanB);
-            }
-            //calculate the bottom half
             double bottomA = 0;
             double bottomB = 0;
             for (int i = 0; i < axisA.length; i++) {
+                topValue += (axisA[i] - meanA) * (axisB[i] - meanB);
                 bottomA += Math.pow((axisA[i] - meanA), 2);
                 bottomB += Math.pow((axisB[i] - meanB), 2);
             }
+            //calculate the bottom half
             bottomA = Math.pow(bottomA, .5);
             bottomB = Math.pow(bottomB, .5);
             //put it all together
             double correlation = topValue / (bottomA * bottomB);
-            //attach to window
+            //attach to window //TODO
             final Element mediaPanel = Document.get().getElementById(elementID);
             Text correlationText = Document.get().createTextNode("Correlation: "+ Double.toString(correlation));
             mediaPanel.appendChild(correlationText);
