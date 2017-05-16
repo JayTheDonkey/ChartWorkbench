@@ -15,13 +15,19 @@ import java.util.LinkedList;
 
 public class GraphicalFunctions {
 
-    public boolean bestFitActive, crossSectionsActive;
+    public boolean bestFitActive, crossSectionsActive, correlationActive;
 
     public String [][] data;
     public String elementID;
 
-    public GraphicalFunctions(String dataStr){
+    public double correlation;
 
+    public ChartGWT chartGWT;
+
+    public GraphicalFunctions(ChartGWT tempChartGWT){
+        chartGWT = tempChartGWT;
+
+        String dataStr = chartGWT.data;
         String   row   = dataStr.substring(0, dataStr.indexOf('\n'));
         String[] cols  = row.split(",");
         dataStr = dataStr.replace("\n",",");
@@ -41,10 +47,9 @@ public class GraphicalFunctions {
             ArrayList<String> rows = dataList.get(i);
             data[i] = rows.toArray(new String[rows.size()]);
         }
-    }
-
-    public void updateElementID(String mediaPanelID){
-        elementID = mediaPanelID;
+        bestFitActive = false;
+        crossSectionsActive = false;
+        correlationActive = false;
     }
 
     public void createLineOfBestFitDialog(){
@@ -259,15 +264,18 @@ public class GraphicalFunctions {
             bottomA = Math.pow(bottomA, .5);
             bottomB = Math.pow(bottomB, .5);
             //put it all together
-            double correlation = topValue / (bottomA * bottomB);
-            //attach to window //TODO
-            final Element mediaPanel = Document.get().getElementById(elementID);
-            Text correlationText = Document.get().createTextNode("Correlation: "+ Double.toString(correlation));
-            mediaPanel.appendChild(correlationText);
+            correlation = topValue / (bottomA * bottomB);
+            correlationActive = true;
+            chartGWT.render();
         }
         catch (NumberFormatException e){
             createErrorMessage("One or more of the axes is a data set of strings");
         }
+    }
+
+    public void removeCorrelations(){
+        correlationActive = false;
+        Document.get().getElementById("correlationDiv").removeFromParent();
     }
 
     public void createCrossSectionHandler(){
@@ -285,6 +293,22 @@ public class GraphicalFunctions {
     public void createTransformationsHandler(){
 
     }
+
+    public void updateGraphicalElements(String mediaPanelID){
+        elementID = mediaPanelID;
+        final Element mediaPanel = Document.get().getElementById(elementID);
+        //display correlation
+        if (correlationActive){
+            Element correlationDiv = Document.get().createDivElement();
+            correlationDiv.addClassName("correlationDiv");
+            correlationDiv.setId("correlationDiv");
+            mediaPanel.appendChild(correlationDiv);
+
+            Text correlationText = Document.get().createTextNode("Correlation: "+ Double.toString(correlation));
+            correlationDiv.appendChild(correlationText);
+        }
+    }
+
     public void createErrorMessage(String message){
         final DialogBox dialog = new DialogBox(false);
         dialog.setPopupPosition(400, 300);

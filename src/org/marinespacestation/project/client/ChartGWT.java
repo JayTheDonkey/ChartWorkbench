@@ -137,7 +137,7 @@ public ChartGWT(
    this.type =
       cols.length < 3
          ? ChartGWT.kCHART_LINE_CHART : ChartGWT.kCHART_SURFACE_CHART;
-   functions = new GraphicalFunctions(data);
+   functions = new GraphicalFunctions(this);
 }
 /*------------------------------------------------------------------------------
 
@@ -496,7 +496,7 @@ public void graphicalMenuHandler(String mediaPanelId) {
 
                                        //-----------Correlations-------------------//
    Element graphicalItemCorrelation = Document.get().createLIElement();
-   graphicalItemCorrelation.setId("graphcialItemCorrelation");
+   graphicalItemCorrelation.setId("graphicalItemCorrelation");
    Element graphicalItemCorrelationAnchor = Document.get().createAnchorElement();
    graphicalItemCorrelationAnchor.setInnerText("Correlation");
    graphicalItemCorrelation.appendChild(graphicalItemCorrelationAnchor);
@@ -626,6 +626,9 @@ public void graphicalFunctions(String option) {
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_CORRELATION)) {//if selected while active, should be able to remove previous entries
+      if(functions.correlationActive){
+         functions.removeCorrelations();
+      }
       functions.createCorrelationDialog();
       changed = true;
    }
@@ -1026,7 +1029,7 @@ public void render()
    }
    else if (kCHART_GRAPHICAL_CHART.equals(type)) {
       graphicalMenuHandler(elementId);
-      functions.updateElementID(elementId);
+      functions.updateGraphicalElements(elementId);
       drawGraphicalChartNative(chartContainerId, data, srcURL, type, nativeOptions, bEditMode);
    }
    else
