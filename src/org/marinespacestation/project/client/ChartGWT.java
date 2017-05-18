@@ -784,24 +784,62 @@ protected static native void draw2DChartNative(
 /*-{
     function drawGraphicalChart(chartData)
     {
-        var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
-
-        //HERE IS THE PART WHERE I WILL FUCK WITH THE ARRAY
-
-        var data         = new $wnd.google.visualization.arrayToDataTable(arrayData);
         options = {
             hAxis: {title: "X-Axis"},
             vAxis: {title: "Y-Axis"},
-            pointSize: 5,
-            dataOpacity: .2,
+            pointSize: 6,
+            dataOpacity: .4,
             pointShape: "triangle",
-            colors: ['#E94D20', '#ECA403', '#63A74A',
-                '#15A0C8', '#4151A3', '#703593', '#981B48'],
+            legend: "none",
             series: {
-                0: {curveType: "function"}
+                0: {}
             }
         };
-        //  options.series["0"].curveType = "function";
+
+        //I GOTTA REMOVE THE FUCKING COMMAS FROM THE VALUES AND MAKE THEM ALL NUMBERS
+        //    GOD
+        //        DAMNIT
+
+        var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
+
+        var newArray = new Array(arrayData.length + 1);
+        for (var i = 0; i < newArray.length; i++) {
+            newArray[i] = new Array(arrayData.length + 1);
+            if (i === 0) {
+                for (var m = 0; m < newArray[0].length; m++) {
+                    newArray[0][m] = "";
+                }
+            }
+            else {
+                for (var h = 0; h < newArray[i].length; h++) {
+                    newArray[i][h] = null;
+                }
+            }
+        }
+        for (var k = 0; k < arrayData.length; k++) {
+            newArray[k + 1][0] = arrayData[k][0];
+            for (var n = 0; n < arrayData[0].length; n++) {
+                newArray[k + 1][k+1] = arrayData[k][1];
+            }
+        }
+
+        var data         = new $wnd.google.visualization.arrayToDataTable(newArray);
+
+        if (arrayData[0].length > 2) {
+            var thirdDim = new Array(arrayData.length);
+            for (var t = 0; t < thirdDim.length; t++) {
+                thirdDim[t] = arrayData[t][2];
+            }
+            var maxValue = thirdDim.sort()[thirdDim.length - 1];
+            var minValue = thirdDim.sort()[0];
+            var colorArray = new Array(newArray.length - 1);
+            for (var c = 0; c < colorArray.length; c++) {
+                var colorNum = ((thirdDim[c] - minValue)/(maxValue - minValue))*255;
+                colorArray[c] = rgbToHex(255 - colorNum, 0, colorNum);
+            }
+            options.colors = colorArray;
+        }
+
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
                 {
@@ -824,6 +862,7 @@ protected static native void draw2DChartNative(
     {
         drawGraphicalChart(localChartData);
     }
+
 }-*/;
 /*
 Make different if/else statements that switch btwn 1-4 dim graphs, then compute accordingly
