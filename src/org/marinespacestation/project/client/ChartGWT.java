@@ -796,11 +796,22 @@ protected static native void draw2DChartNative(
             }
         };
 
-        //I GOTTA REMOVE THE FUCKING COMMAS FROM THE VALUES AND MAKE THEM ALL NUMBERS
-        //    GOD
-        //        DAMNIT
-
         var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
+
+        //hopefully this fixes the commas
+
+        if (arrayData[0].length > 0) {
+
+            for (var num = 0; num < arrayData.length; num++) {
+                for (var index = 0; index < arrayData[0].length; index++) {
+                    if (arrayData[num][index] === arrayData[num][index].toString()) {
+                        var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
+                        arrayData[num][index] = parseInt(strHolder);
+                    }
+                }
+            }
+
+        }
 
         var newArray = new Array(arrayData.length + 1);
         for (var i = 0; i < newArray.length; i++) {
@@ -827,18 +838,31 @@ protected static native void draw2DChartNative(
 
         if (arrayData[0].length > 2) {
             var thirdDim = new Array(arrayData.length);
+            var tempArray = new Array(arrayData.length);
             for (var t = 0; t < thirdDim.length; t++) {
                 thirdDim[t] = arrayData[t][2];
+                tempArray[t] = arrayData[t][2];
             }
-            var maxValue = thirdDim.sort()[thirdDim.length - 1];
-            var minValue = thirdDim.sort()[0];
+            var maxValue = tempArray.sort()[thirdDim.length - 1];
+            var minValue = tempArray.sort()[0];
             var colorArray = new Array(newArray.length - 1);
             for (var c = 0; c < colorArray.length; c++) {
-                var colorNum = ((thirdDim[c] - minValue)/(maxValue - minValue))*255;
-                colorArray[c] = rgbToHex(255 - colorNum, 0, colorNum);
+                var colorNum = Math.trunc(((thirdDim[c] - minValue)/(maxValue - minValue))*254);
+                var red = (255 - colorNum).toString(16);
+                if (red.length === 1) {
+                    red = "0" + red;
+                }
+                var green = "00";
+                var blue = (colorNum).toString(16);
+                if (blue.length === 1) {
+                    blue = "0" + blue;
+                }
+                colorArray[c] = '#' + red + green + blue;
             }
             options.colors = colorArray;
         }
+
+        //The problem is still that the colorArray has some weird shit in it
 
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
