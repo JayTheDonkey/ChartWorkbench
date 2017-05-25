@@ -806,10 +806,7 @@ protected static native void draw2DChartNative(
             pointSize: 3,
             dataOpacity: .4,
             pointShape: "circle",
-            legend: "none",
-            series: {
-                0: {}
-            }
+            legend: "none"
         };
 
         var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
@@ -888,7 +885,8 @@ protected static native void draw2DChartNative(
                 var max = temp2.sort(function(a, b){return a-b})[fourthDim.length - 1];
                 var min = temp2.sort(function(a, b){return a-b})[0];
                 for (var l = 0; l < fourthDim.length; l++) {
-                    options.series[l.toString()].pointSize = ((fourthDim[l] - min)/(max - min))*11 + 1;
+                    var tempNum = ((fourthDim[l] - min)/(max - min))*11 + 1;
+                    options.series[l.toString].pointSize = tempNum;
                 }
             }
         }
