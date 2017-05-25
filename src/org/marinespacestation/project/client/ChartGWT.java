@@ -803,9 +803,9 @@ protected static native void draw2DChartNative(
         options = {
             hAxis: {title: "X-Axis"},
             vAxis: {title: "Y-Axis"},
-            pointSize: 6,
+            pointSize: 3,
             dataOpacity: .4,
-            pointShape: "triangle",
+            pointShape: "circle",
             legend: "none",
             series: {
                 0: {}
@@ -822,6 +822,7 @@ protected static native void draw2DChartNative(
                 for (var index = 0; index < arrayData[0].length; index++) {
                     if (arrayData[num][index] === arrayData[num][index].toString()) {
                         var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
+                        strHolder = "0" + strHolder;
                         arrayData[num][index] = parseInt(strHolder);
                     }
                 }
@@ -859,11 +860,11 @@ protected static native void draw2DChartNative(
                 thirdDim[t] = arrayData[t][2];
                 tempArray[t] = arrayData[t][2];
             }
-            var maxValue = tempArray.sort()[thirdDim.length - 1];
-            var minValue = tempArray.sort()[0];
+            var maxValue = tempArray.sort(function(a, b){return a-b})[thirdDim.length - 1];
+            var minValue = tempArray.sort(function(a, b){return a-b})[0];
             var colorArray = new Array(newArray.length - 1);
             for (var c = 0; c < colorArray.length; c++) {
-                var colorNum = Math.trunc(((thirdDim[c] - minValue)/(maxValue - minValue))*254);
+                var colorNum = Math.trunc(((thirdDim[c] - minValue)/(maxValue - minValue))*255);
                 var red = (255 - colorNum).toString(16);
                 if (red.length === 1) {
                     red = "0" + red;
@@ -876,6 +877,20 @@ protected static native void draw2DChartNative(
                 colorArray[c] = '#' + red + green + blue;
             }
             options.colors = colorArray;
+
+            if (arrayData[0].length > 3) {
+                var fourthDim = new Array(arrayData.length);
+                var temp2 = new Array(arrayData.length);
+                for (var e = 0; e < fourthDim.length; e++) {
+                    fourthDim[e] = arrayData[e][3];
+                    temp2[e] = arrayData[e][3];
+                }
+                var max = temp2.sort(function(a, b){return a-b})[fourthDim.length - 1];
+                var min = temp2.sort(function(a, b){return a-b})[0];
+                for (var l = 0; l < fourthDim.length; l++) {
+                    options.series[l.toString()].pointSize = ((fourthDim[l] - min)/(max - min))*11 + 1;
+                }
+            }
         }
 
         //The problem is still that the colorArray has some weird shit in it
