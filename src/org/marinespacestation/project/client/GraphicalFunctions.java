@@ -42,11 +42,12 @@ public class GraphicalFunctions {
             }
             dataList.add(axes);
         }
-        data = new String [dataList.size()][];
+        String[][] tempData = new String [dataList.size()][];
         for (int i = 0; i < dataList.size(); i++) {
             ArrayList<String> rows = dataList.get(i);
-            data[i] = rows.toArray(new String[rows.size()]);
+            tempData[i] = rows.toArray(new String[rows.size()]);
         }
+        data = tempData;
         bestFitActive = false;
         crossSectionsActive = false;
         correlationActive = false;
@@ -287,7 +288,8 @@ public class GraphicalFunctions {
     }
 
     public void createFunctions(){
-
+        data[0][3] = "6";
+        chartGWT.setData(data);
     }
 
     public void createTransformationsHandler(){

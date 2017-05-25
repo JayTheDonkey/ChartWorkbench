@@ -183,6 +183,22 @@ public ChartGWT(
       }
    }
 }
+
+public void setData(String newData){
+   data = newData;
+}
+
+public void setData(String [][] newData){
+   String dataStr = "";
+   for (int i=0;i<newData[0].length;i++){
+      for (int j=0;j<newData.length;j++){
+         dataStr += newData[j][i]+",";
+      }
+      dataStr += "\n";
+   }
+   dataStr = dataStr.substring(0,dataStr.length()-2);
+   data = dataStr;
+}
 /*------------------------------------------------------------------------------
 
 @name       addChartMenuHandler - add chart menu handler
@@ -465,7 +481,7 @@ public void assignChartOption(
 
     @history
 
-    @notes      Called when the Graphical chart type is selected. Removed when it is switch away.
+    @notes      Called when the Graphical chart type is selected. Removed when it is switched away.
                                                                               */
 //------------------------------------------------------------------------------
 public void graphicalMenuHandler(String mediaPanelId) {
