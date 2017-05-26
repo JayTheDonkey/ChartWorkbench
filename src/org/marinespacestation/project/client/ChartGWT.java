@@ -194,9 +194,9 @@ public void setData(String [][] newData){
       for (int j=0;j<newData.length;j++){
          dataStr += newData[j][i]+",";
       }
-      dataStr += "\n";
+      dataStr = dataStr.substring(0, dataStr.length()-1) +"\n";
    }
-   dataStr = dataStr.substring(0,dataStr.length()-2);
+   dataStr = dataStr.substring(0,dataStr.length()-1); //remove extra symbols created by loop
    data = dataStr;
 }
 /*------------------------------------------------------------------------------
@@ -814,17 +814,19 @@ protected static native void draw2DChartNative(
         //hopefully this fixes the commas
 
         if (arrayData[0].length > 0) {
-
-            for (var num = 0; num < arrayData.length; num++) {
-                for (var index = 0; index < arrayData[0].length; index++) {
-                    if (arrayData[num][index] === arrayData[num][index].toString()) {
-                        var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
-                        strHolder = "0" + strHolder;
-                        arrayData[num][index] = parseInt(strHolder);
+                for (var num = 0; num < arrayData.length; num++) {
+                    for (var index = 0; index < arrayData[0].length; index++) {
+                        if (arrayData[num][index] === null)
+                        {
+                            index=index;
+                        }
+                        if (arrayData[num][index] === arrayData[num][index].toString()) {
+                            var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
+                            strHolder = "0" + strHolder;
+                            arrayData[num][index] = parseInt(strHolder);
+                        }
                     }
                 }
-            }
-
         }
 
         var newArray = new Array(arrayData.length + 1);

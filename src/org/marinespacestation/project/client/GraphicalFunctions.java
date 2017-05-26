@@ -288,7 +288,7 @@ public class GraphicalFunctions {
     }
 
     public void createFunctions(){
-        data[0][3] = "6";
+        data[0][3] = (Integer.parseInt(data[0][3]) + 1) +"";
         chartGWT.setData(data);
     }
 
