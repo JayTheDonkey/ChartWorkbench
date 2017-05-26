@@ -24,6 +24,21 @@ public class GraphicalFunctions {
 
     public ChartGWT chartGWT;
 
+/*------------------------------------------------------------------------------
+
+@name       GraphicalFunctions - Graphical Functions default constructor
+                                                                              */
+    /**
+     Default constructor
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
+
     public GraphicalFunctions(ChartGWT tempChartGWT){
         chartGWT = tempChartGWT;
 
@@ -52,7 +67,20 @@ public class GraphicalFunctions {
         crossSectionsActive = false;
         correlationActive = false;
     }
+/*------------------------------------------------------------------------------
 
+@name       createdLineOfBestFitDialog - creates a dialog for Line of Best Fit creation
+                                                                              */
+    /**
+     creates a DialogBox for the Line of Best Fix creation process
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void createLineOfBestFitDialog(){
 
         final DialogBox dialog = new DialogBox(false);

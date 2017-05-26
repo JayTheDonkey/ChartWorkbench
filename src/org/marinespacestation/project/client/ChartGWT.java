@@ -183,11 +183,37 @@ public ChartGWT(
       }
    }
 }
+/*------------------------------------------------------------------------------
 
+@name       setData - sets the class variable data
+                                                                              */
+   /**
+    Sets the class variable data to the input string
+
+    @return     void
+
+    @history    Mon May 23, 2017 created
+
+    @notes
+    */
+//------------------------------------------------------------------------------
 public void setData(String newData){
    data = newData;
 }
+/*------------------------------------------------------------------------------
 
+@name       setData - converts the a string array of data to a string in csv form
+                                                                              */
+   /**
+    Converts the a string array of data to a string in csv form
+
+    @return     void
+
+    @history    Mon May 23, 2017 created
+
+    @notes
+    */
+//------------------------------------------------------------------------------
 public void setData(String [][] newData){
    String dataStr = "";
    for (int i=0;i<newData[0].length;i++){
