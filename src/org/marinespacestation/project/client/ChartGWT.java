@@ -832,8 +832,7 @@ protected static native void draw2DChartNative(
             pointSize: 3,
             dataOpacity: .4,
             pointShape: "circle",
-            legend: "none",
-            height: "400px"
+            legend: "none"
         };
 
         //try changing the width and height in options - check out the 3d graph for more info
