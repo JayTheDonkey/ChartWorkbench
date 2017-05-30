@@ -42,8 +42,8 @@ public class GraphicalFunctions {
 
     public GraphicalFunctions(ChartGWT tempChartGWT){
         chartGWT = tempChartGWT;
-
         String dataStr = chartGWT.data;
+        //TODO this does not handle commas in terms eg. "1,324"
         String   row   = dataStr.substring(0, dataStr.indexOf('\n'));
         String[] cols  = row.split(",");
         dataStr = dataStr.replace("\"", "");
