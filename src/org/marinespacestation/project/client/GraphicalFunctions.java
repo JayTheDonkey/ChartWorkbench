@@ -444,7 +444,7 @@ public class GraphicalFunctions {
         dialogCS.show();
     }
 
-    public void createCrossSections(int constant, int a1,int a2, int value){
+    public void createCrossSections(int constant, int a1,int a2, int val){
         boolean removeFirst = false;
         LinkedList<String> axis1 = new LinkedList<>(Arrays.asList(data[a1]));
         LinkedList<String> axis2 = new LinkedList<>(Arrays.asList(data[a2]));
@@ -471,7 +471,7 @@ public class GraphicalFunctions {
             }
         /* Calculate Cross Sections */
         for(int i = 0; i<axissC.length; i++){
-            axissC[i] = value;
+            axissC[i] = val;
         }
         chartGWT.render();
         }
