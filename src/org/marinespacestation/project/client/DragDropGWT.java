@@ -213,7 +213,7 @@ protected static native void dropEventHandlerNative(
    }
                                        // process only first File object      //
    var file = ev.dataTransfer.files[0];
-   var type = "";
+   var type = file.type;
    if (type.length == 0)
    {
                                        // windows sometime reports empty type //
