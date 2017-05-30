@@ -360,25 +360,25 @@ public class GraphicalFunctions {
         Label labelDir = new Label("Constant:");
         labelDir.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
         final ListBox directionBox = new ListBox();
-        directionBox.addItem("x=c");
-        directionBox.addItem("y=c");
-        directionBox.addItem("z=c");
+        directionBox.addItem("X=C");
+        directionBox.addItem("Y=C");
+        directionBox.addItem("Z=C");
 
 
         Label labelAx1 = new Label("Axis 1:");
         labelAx1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
         final ListBox axesBox1 = new ListBox();
-        axesBox1.addItem("x=c");
-        axesBox1.addItem("y=c");
-        axesBox1.addItem("z=c");
+        axesBox1.addItem("X Axis");
+        axesBox1.addItem("Y Axis");
+        axesBox1.addItem("Z Axis");
 
 
         Label labelAx2 = new Label("Axis 2:");
         labelAx2.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
         final ListBox axesBox2 = new ListBox();
-        axesBox2.addItem("x=c");
-        axesBox2.addItem("y=c");
-        axesBox2.addItem("z=c");
+        axesBox2.addItem("X Axis");
+        axesBox2.addItem("Y Axis");
+        axesBox2.addItem("Z Axis");
 
         Button genCS = new Button("Enter");
 
