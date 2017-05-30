@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Text;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.*;
 
 import java.util.ArrayList;
@@ -315,9 +316,167 @@ public class GraphicalFunctions {
         crossSectionsActive = false;
     }
 
-    public void createFunctions(){
-        data[0][3] = (Integer.parseInt(data[0][3]) + 1) +"";
+    public void createFunctionsDialog(){
+        final DialogBox dialog = new DialogBox(false);
+        dialog.setPopupPosition(400, 300);
+        dialog.setText("Functions");
+        dialog.setAnimationEnabled(true);
+        dialog.setGlassEnabled(true);
+
+        Label label1 = new Label("Choose an axis you would like to modify");
+        Label listboxLabel = new Label("Modify");
+        Label label2 = new Label("Now choose the function you would like to");
+        Label label2cont = new Label("modify the selected axis by");
+        Label textboxLabel = new Label("Enter Function: ");
+
+        VerticalPanel panel = new VerticalPanel();
+        panel.setStyleName("verticalPanel");
+        panel.setHeight("100");
+        panel.setWidth("300");
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        panel.add(label1);
+
+        final ListBox axesBox = new ListBox();//this should actually have an entry for each axis of the data
+        axesBox.addItem("X Axis");
+        axesBox.addItem("Y Axis");
+        if (data.length == 3){
+            axesBox.addItem("Z Axis");
+        }
+        if (data.length == 4){
+            axesBox.addItem("W Axis");
+        }
+
+        HorizontalPanel listBoxLayer = new HorizontalPanel();
+        listBoxLayer.setHeight("100");
+        listBoxLayer.setWidth("300");
+        listBoxLayer.setStyleName("listBoxPanel");
+        listBoxLayer.add(listboxLabel);
+        listBoxLayer.add(axesBox);
+
+        panel.add(listBoxLayer);
+        panel.add(label2);
+        panel.add(label2cont);
+
+        final ListBox functionBox = new ListBox();
+        functionBox.addItem("Add a Number to Axis");
+        functionBox.addItem("Multiply Axis by a Number");
+        functionBox.addItem("Raise Axis to a Power");
+
+        HorizontalPanel functionBoxLayer = new HorizontalPanel();
+        functionBoxLayer.setHeight("100");
+        functionBoxLayer.setWidth("300");
+        functionBoxLayer.setStyleName("listBoxPanel");
+        functionBoxLayer.add(textboxLabel);
+        functionBoxLayer.add(functionBox);
+
+        panel.add(functionBoxLayer);
+
+        Button ok = new Button("Enter");
+        ok.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                int axis = axesBox.getSelectedIndex();
+                String function = functionBox.getSelectedItemText();
+                createSecondaryFunctionDialog(axis, function);
+                dialog.hide();
+            }
+        });
+
+        Button cancel = new Button("Cancel");
+        cancel.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
+
+        HorizontalPanel buttonLayer = new HorizontalPanel();
+        buttonLayer.setHeight("100");
+        buttonLayer.setWidth("300");
+        buttonLayer.addStyleName("buttonPanel");
+        buttonLayer.add(ok);
+        buttonLayer.add(cancel);
+
+        panel.add(buttonLayer);
+
+        dialog.setWidget(panel);
+        dialog.center();
+
+    }
+
+    public void createSecondaryFunctionDialog(int axis, String functionType){
+        final DialogBox dialog = new DialogBox(false);
+        dialog.setPopupPosition(400, 300);
+        dialog.setText("Input Value");
+        dialog.setAnimationEnabled(true);
+        dialog.setGlassEnabled(true);
+
+        Label label = new Label(functionType);
+        Label textBoxLabel = new Label("enter a number");
+
+        VerticalPanel panel = new VerticalPanel();
+        panel.setStyleName("verticalPanel");
+        panel.setHeight("100");
+        panel.setWidth("300");
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        panel.add(label);
+
+        final TextBox textBox= new TextBox();
+
+        HorizontalPanel textBoxLayer = new HorizontalPanel();
+        textBoxLayer.setHeight("100");
+        textBoxLayer.setWidth("300");
+        textBoxLayer.setStyleName("textBoxPanel");
+        textBoxLayer.add(textBoxLabel);
+        textBoxLayer.add(textBox);
+
+        panel.add(textBoxLayer);
+
+        Button ok = new Button("Enter");
+        ok.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                createFunctions(axis, functionType, Double.parseDouble(textBox.getText()));
+                dialog.hide();
+            }
+        });
+
+        Button cancel = new Button("Cancel");
+        cancel.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
+
+        HorizontalPanel buttonLayer = new HorizontalPanel();
+        buttonLayer.setHeight("100");
+        buttonLayer.setWidth("300");
+        buttonLayer.addStyleName("buttonPanel");
+        buttonLayer.add(ok);
+        buttonLayer.add(cancel);
+
+        panel.add(buttonLayer);
+
+        dialog.setWidget(panel);
+        dialog.center();
+    }
+
+    public void createFunctions(int axis, String functionType, Double value) {
+        for (int i=0;i<data[axis].length;i++){
+            try {
+                if (functionType.equals("Add a Number to Axis")) {
+                    data[axis][i] = (Double.parseDouble(data[axis][i]) + value) + "";
+                }
+                else if (functionType.equals("Multiply Axis by a Number")) {
+                    data[axis][i] = (Double.parseDouble(data[axis][i]) * value) + "";
+                }
+                else {
+                    data[axis][i] = (Math.pow(Double.parseDouble(data[axis][i]), value)) + "";
+                }
+            }
+            catch (NumberFormatException e){
+
+            }
+        }
         chartGWT.setData(data);
+        chartGWT.render();
     }
 
     public void createTransformationsHandler(){

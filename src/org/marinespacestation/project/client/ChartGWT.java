@@ -684,7 +684,7 @@ public void graphicalFunctions(String option) {
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_FUNCTIONS)) {//if selected while active, should be able to remove previous entries
-      functions.createFunctions();
+      functions.createFunctionsDialog();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {//if selected while active, should be able to remove previous entries
