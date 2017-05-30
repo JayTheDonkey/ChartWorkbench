@@ -46,6 +46,8 @@ public class GraphicalFunctions {
         String dataStr = chartGWT.data;
         String   row   = dataStr.substring(0, dataStr.indexOf('\n'));
         String[] cols  = row.split(",");
+        dataStr = dataStr.replace("\"", "");
+        dataStr = dataStr.replace("\r", "");//removes windows carriage returns
         dataStr = dataStr.replace("\n",",");
         String[] values = dataStr.split(",");
         ArrayList<ArrayList<String>> dataList = new ArrayList<>();
@@ -108,6 +110,19 @@ public class GraphicalFunctions {
         final ListBox axesBox2 = new ListBox();
         axesBox2.addItem("X Axis");
         axesBox2.addItem("Y Axis");
+
+        if (data.length >= 3){
+            axesBox1.addItem("Z Axis");
+            axesBox2.addItem("Z Axis");
+        }
+        if (data.length >= 4){
+            axesBox1.addItem("W Axis");
+            axesBox2.addItem("W Axis");
+        }
+        if (data.length == 5){
+            axesBox1.addItem("V Axis");
+            axesBox2.addItem("V Axis");
+        }
 
         HorizontalPanel listBoxLayer1 = new HorizontalPanel();
         listBoxLayer1.setHeight("100");
@@ -202,6 +217,19 @@ public class GraphicalFunctions {
         axesBox2.addItem("X Axis");
         axesBox2.addItem("Y Axis");
 
+        if (data.length >= 3){
+            axesBox1.addItem("Z Axis");
+            axesBox2.addItem("Z Axis");
+        }
+        if (data.length >= 4){
+            axesBox1.addItem("W Axis");
+            axesBox2.addItem("W Axis");
+        }
+        if (data.length == 5){
+            axesBox1.addItem("V Axis");
+            axesBox2.addItem("V Axis");
+        }
+
         HorizontalPanel listBoxLayer1 = new HorizontalPanel();
         listBoxLayer1.setHeight("100");
         listBoxLayer1.setWidth("300");
@@ -264,12 +292,12 @@ public class GraphicalFunctions {
             tempA.remove(0);
             tempB.remove(0);
         }
-        int[] axisA = new int[tempA.size()];
-        int[] axisB = new int[tempB.size()];
+        Double[] axisA = new Double[tempA.size()];
+        Double[] axisB = new Double[tempB.size()];
         try {
             for (int i = 0; i < axisA.length; i++) { //parse axes into ints
-                axisA[i] = Integer.parseInt(tempA.get(i));
-                axisB[i] = Integer.parseInt(tempB.get(i));
+                axisA[i] = Double.parseDouble(tempA.get(i));
+                axisB[i] = Double.parseDouble(tempB.get(i));
             }
             /* Calculate Correlation */
             //calculate means of the data sets
@@ -339,13 +367,15 @@ public class GraphicalFunctions {
         final ListBox axesBox = new ListBox();//this should actually have an entry for each axis of the data
         axesBox.addItem("X Axis");
         axesBox.addItem("Y Axis");
-        if (data.length == 3){
+        if (data.length >= 3){
             axesBox.addItem("Z Axis");
         }
-        if (data.length == 4){
+        if (data.length >= 4){
             axesBox.addItem("W Axis");
         }
-
+        if (data.length == 5){
+            axesBox.addItem("V Axis");
+        }
         HorizontalPanel listBoxLayer = new HorizontalPanel();
         listBoxLayer.setHeight("100");
         listBoxLayer.setWidth("300");
@@ -402,7 +432,7 @@ public class GraphicalFunctions {
 
     }
 
-    public void createSecondaryFunctionDialog(int axis, String functionType){
+    public void createSecondaryFunctionDialog(final int axis, final String functionType){
         final DialogBox dialog = new DialogBox(false);
         dialog.setPopupPosition(400, 300);
         dialog.setText("Input Value");
