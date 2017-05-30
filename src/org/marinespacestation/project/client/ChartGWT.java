@@ -962,26 +962,7 @@ protected static native void draw2DChartNative(
     }
 
 }-*/;
-/*
-Make different if/else statements that switch btwn 1-4 dim graphs, then compute accordingly
-1 dim, make the x-axis be index
-2 dim, just normal scatter plot
-3 dim, size variation
-4 dim, color variation
 
-focus on the "options" variable =>
-
-var options = {
-   title: 'This is the title',
-   hAxis: {title: 'X-Axis', minValue: 0, maxValue: 15},
-   vAxis: {title: 'Y-Axis', minValue: 0, maxValue: 15},
-   legend: 'none'
-};
-
-***find out how to set limitless point settings in js b/c we need to customize the size/color of each one separately***
-====>>>> The point settings stuff are object literals and can be modified with square brackets and for loops :)
-   =======> check out the favorited link
-*/
 /*------------------------------------------------------------------------------
 
 @name       draw3DChartNative - render the specified 3D chart
