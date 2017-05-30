@@ -920,6 +920,22 @@ protected static native void draw2DChartNative(
                     options["series"][l+""] = {pointSize: tempNum};
                 }
             }
+
+            if (arrayData[0].length > 4) {
+                var tempNum2;
+                var fifthDim = new Array(arrayData.length);
+                var temp3 = new Array(arrayData.length);
+                for (var f = 0; f < fifthDim.length; f++) {
+                    fifthDim[f] = arrayData[f][4];
+                    temp3[f] = arrayData[f][4];
+                }
+                var max2 = temp3.sort(function(a, b){return a-b})[fifthDim.length - 1];
+                var min2 = temp3.sort(function(a, b){return a-b})[0];
+                for (var b = 0; b < fifthDim.length; b++) {
+                    tempNum2 = ((fifthDim[b] - min2)/(max2 - min2))*.7 + .15;
+                    options["series"][b+""]["dataOpacity"] = tempNum2;
+                }
+            }
         }
 
         var chartWrapper =
