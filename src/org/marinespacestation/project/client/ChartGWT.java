@@ -904,6 +904,7 @@ protected static native void draw2DChartNative(
             options.colors = colorArray;
 
             if (arrayData[0].length > 3) {
+                var tempNum;
                 var fourthDim = new Array(arrayData.length);
                 var temp2 = new Array(arrayData.length);
                 for (var e = 0; e < fourthDim.length; e++) {
@@ -912,14 +913,14 @@ protected static native void draw2DChartNative(
                 }
                 var max = temp2.sort(function(a, b){return a-b})[fourthDim.length - 1];
                 var min = temp2.sort(function(a, b){return a-b})[0];
+                options.series = {};
                 for (var l = 0; l < fourthDim.length; l++) {
-                    var tempNum = ((fourthDim[l] - min)/(max - min))*11 + 1;
-                    options.series[l.toString].pointSize = tempNum;
+                    tempNum = ((fourthDim[l] - min)/(max - min))*15 + 1;
+                    options["series"][l+""] = {};
+                    options["series"][l+""] = {pointSize: tempNum};
                 }
             }
         }
-
-        //The problem is still that the colorArray has some weird shit in it
 
         var chartWrapper =
             new $wnd.google.visualization.ChartWrapper(
