@@ -835,6 +835,8 @@ protected static native void draw2DChartNative(
             legend: "none"
         };
 
+        //try changing the width and height in options - check out the 3d graph for more info
+
         var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
 
         //hopefully this fixes the commas
