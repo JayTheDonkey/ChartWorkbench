@@ -913,7 +913,7 @@ protected static native void draw2DChartNative(
                 var min = temp2.sort(function(a, b){return a-b})[0];
                 options.series = {};
                 for (var l = 0; l < fourthDim.length; l++) {
-                    tempNum = ((fourthDim[l] - min)/(max - min))*15 + 1;
+                    tempNum = ((fourthDim[l] - min)/(max - min))*30 + 1;
                     options["series"][l+""] = {};
                     options["series"][l+""] = {pointSize: tempNum};
                 }
@@ -930,7 +930,7 @@ protected static native void draw2DChartNative(
                 var max2 = temp3.sort(function(a, b){return a-b})[fifthDim.length - 1];
                 var min2 = temp3.sort(function(a, b){return a-b})[0];
                 for (var b = 0; b < fifthDim.length; b++) {
-                    tempNum2 = ((fifthDim[b] - min2)/(max2 - min2))*.7 + .15;
+                    tempNum2 = ((fifthDim[b] - min2)/(max2 - min2))*.8 + .1;
                     options["series"][b+""]["dataOpacity"] = tempNum2;
                 }
             }
