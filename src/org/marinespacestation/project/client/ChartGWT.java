@@ -842,10 +842,6 @@ protected static native void draw2DChartNative(
         if (arrayData[0].length > 0) {
                 for (var num = 0; num < arrayData.length; num++) {
                     for (var index = 0; index < arrayData[0].length; index++) {
-                        if (arrayData[num][index] === null)
-                        {
-                            index=index;
-                        }
                         if (arrayData[num][index] === arrayData[num][index].toString()) {
                             var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
                             strHolder = "0" + strHolder;
