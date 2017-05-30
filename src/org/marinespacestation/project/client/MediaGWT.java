@@ -35,7 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
                                        // MediaGWT ===========================//
-public class MediaGWT
+public class
+MediaGWT
 {
                                        // class constants ------------------- //
 public static final String kKEY_ALIGNMENT          = "alignment";

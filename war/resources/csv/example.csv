@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 Person,Age
 Ravi,45
 Jazz,67
@@ -8,4 +9,16 @@ Niko,64
 Sean,32
 Stan,16
 Brian,32
+=======
+Person,Age
+Ravi,45
+Jazz,67
+Gabe,24
+Davis,77
+Yugraj,53
+Niko,64
+Sean,32
+Stan,16
+Brian,32
+>>>>>>> Stashed changes
 Ryan,29

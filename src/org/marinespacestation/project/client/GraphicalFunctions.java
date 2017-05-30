@@ -1,13 +1,24 @@
 package org.marinespacestation.project.client;
 
 
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Text;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+
 import com.google.gwt.i18n.client.NumberFormat;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
+
 import com.google.gwt.user.client.ui.*;
+
+
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +31,7 @@ public class GraphicalFunctions {
 
     public String [][] data;
     public String elementID;
+    protected int scale = 50;
 
     public double correlation;
 
@@ -337,7 +349,135 @@ public class GraphicalFunctions {
     }
 
     public void createCrossSectionHandler(){
-        crossSectionsActive = true;
+        final DialogBox dialogCS = new DialogBox(false, true);
+        dialogCS.setPopupPosition(700, 300);
+        dialogCS.setText("Cross Sections");
+        dialogCS.setAnimationEnabled(true);
+        dialogCS.setGlassEnabled(true);
+
+        Label labelCS = new Label("Generate cross sections");
+
+        Label labelDir = new Label("Constant:");
+        labelDir.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+        final ListBox directionBox = new ListBox();
+        directionBox.addItem("x=c");
+        directionBox.addItem("y=c");
+        directionBox.addItem("z=c");
+
+
+        Label labelAx1 = new Label("Axis 1:");
+        labelAx1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+        final ListBox axesBox1 = new ListBox();
+        axesBox1.addItem("x=c");
+        axesBox1.addItem("y=c");
+        axesBox1.addItem("z=c");
+
+
+        Label labelAx2 = new Label("Axis 2:");
+        labelAx2.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+        final ListBox axesBox2 = new ListBox();
+        axesBox2.addItem("x=c");
+        axesBox2.addItem("y=c");
+        axesBox2.addItem("z=c");
+
+        Button genCS = new Button("Enter");
+
+
+        Button closeCS = new Button("Cancel");
+        closeCS.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialogCS.hide();
+            }
+        });
+
+        //Slider
+        final InputElement sliderElem = InputElement.as(DOM.createElement("input"));
+        sliderElem.setPropertyString("type", "range");
+        sliderElem.setAttribute("min",  "0");
+        sliderElem.setAttribute("max",  "100");
+        sliderElem.setAttribute("step", "10");
+        sliderElem.setValue(Integer.toString(scale));
+
+        Event.sinkEvents(sliderElem, Event.ONCHANGE);
+        Event.setEventListener(sliderElem, new EventListener()
+{
+        public void onBrowserEvent(Event event)
+        {
+            if (event.getType().equalsIgnoreCase("change"))
+            {
+                scale = Integer.parseInt(sliderElem.getValue());
+             }
+        }
+        });
+
+        HorizontalPanel buttonCS = new HorizontalPanel();
+        buttonCS.setWidth("500");
+        buttonCS.setHeight("200");
+        buttonCS.add(genCS);
+        buttonCS.add(closeCS);
+
+        genCS.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                int chosen = directionBox.getSelectedIndex();
+                int a1 = axesBox1.getSelectedIndex();
+                int a2 = axesBox2.getSelectedIndex();
+                createCrossSections(chosen,a1,a2, scale);
+                dialogCS.hide();
+            }
+        });
+        //Adding elements to panel
+        VerticalPanel panelCS = new VerticalPanel();
+        panelCS.setWidth("500");
+        panelCS.setHeight("400");
+        panelCS.setHorizontalAlignment(HasAutoHorizontalAlignment.ALIGN_CENTER);
+        panelCS.add(labelCS);
+        panelCS.add(labelDir);
+        panelCS.add(directionBox);
+        panelCS.add(labelAx1);
+        panelCS.add(axesBox1);
+        panelCS.add(labelAx2);
+        panelCS.add(axesBox2);
+        panelCS.getElement().appendChild(sliderElem);
+        panelCS.add(buttonCS);
+
+        dialogCS.setWidget(panelCS);
+        dialogCS.show();
+    }
+
+    public void createCrossSections(int constant, int a1,int a2, int value){
+        boolean removeFirst = false;
+        LinkedList<String> axis1 = new LinkedList<>(Arrays.asList(data[a1]));
+        LinkedList<String> axis2 = new LinkedList<>(Arrays.asList(data[a2]));
+        LinkedList<String> axisC = new LinkedList<>(Arrays.asList(data[constant]));
+        try {//the logic here is that the axes might have titles. this checks for those and removes them
+            Integer.parseInt(axis1.get(0));
+        }
+        catch (NumberFormatException e){
+            removeFirst = true;
+        }
+        if (removeFirst){
+            axis1.remove(0);
+            axis2.remove(0);
+            axisC.remove(0);
+        }
+        int[] axiss1 = new int[axis1.size()];
+        int[] axiss2 = new int[axis2.size()];
+        int[] axissC = new int[axisC.size()];
+        try {
+            for (int i = 0; i < axiss1.length; i++) { //parse axes into ints
+                axiss1[i] = Integer.parseInt(axis1.get(i));
+                axiss2[i] = Integer.parseInt(axis2.get(i));
+                axissC[i] = Integer.parseInt(axisC.get(i));
+            }
+        /* Calculate Cross Sections */
+        for(int i = 0; i<axissC.length; i++){
+            axissC[i] = value;
+        }
+        chartGWT.render();
+        }
+        catch (NumberFormatException e){
+            createErrorMessage("One or more of the axes is a data set of strings");
+        }
     }
 
     public void removeCrossSections(){
