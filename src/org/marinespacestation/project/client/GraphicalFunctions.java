@@ -55,10 +55,19 @@ public class GraphicalFunctions {
     public GraphicalFunctions(ChartGWT tempChartGWT){
         chartGWT = tempChartGWT;
         String dataStr = chartGWT.data;
-        //TODO this does not handle commas in terms eg. "1,324"
+        //remove commas used to denote powers of 1000, eg. "10,000" -> "10000"
+        for (int i=0;i<dataStr.length();i++){
+            if ((dataStr.charAt(i)+"").equals("\"")){
+                for (int j=i+1;j<dataStr.length();j++){
+                    if ((dataStr.charAt(j)+"").equals("\"")){
+                        dataStr = dataStr.substring(0, i) + dataStr.substring(i,j).replace(",","").replace("\"","") + dataStr.substring(j+1);
+                        break;
+                    }
+                }
+            }
+        }
         String   row   = dataStr.substring(0, dataStr.indexOf('\n'));
         String[] cols  = row.split(",");
-        dataStr = dataStr.replace("\"", "");
         dataStr = dataStr.replace("\r", "");//removes windows carriage returns
         dataStr = dataStr.replace("\n",",");
         String[] values = dataStr.split(",");
