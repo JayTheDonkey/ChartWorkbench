@@ -9,8 +9,6 @@ import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
-import com.google.gwt.i18n.client.NumberFormat;
-
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -29,7 +27,7 @@ public class GraphicalFunctions {
 
     public boolean bestFitActive, crossSectionsActive, correlationActive;
 
-    public String [][] data;
+    public String [][] data, dataSave;
     public String elementID;
     protected int scale = 50;
 
@@ -87,6 +85,7 @@ public class GraphicalFunctions {
             tempData[i] = rows.toArray(new String[rows.size()]);
         }
         data = tempData;
+        dataSave = new String[data.length][data[0].length];
         bestFitActive = false;
         crossSectionsActive = false;
         correlationActive = false;
@@ -366,28 +365,21 @@ public class GraphicalFunctions {
 
         Label labelCS = new Label("Generate cross sections");
 
-        Label labelDir = new Label("Constant:");
+        Label labelDir = new Label("Filter by: ");
         labelDir.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
         final ListBox directionBox = new ListBox();
-        directionBox.addItem("X=C");
-        directionBox.addItem("Y=C");
-        directionBox.addItem("Z=C");
+        directionBox.addItem("X Axis");
+        directionBox.addItem("Y Axis");
+        if (data.length >= 3) {
+            directionBox.addItem("Z Axis");
+        }
+        if (data.length >= 4) {
+            directionBox.addItem("W Axis");
+        }
+        if (data.length >= 5) {
+            directionBox.addItem("V Axis");
+        }
 
-
-        Label labelAx1 = new Label("Axis 1:");
-        labelAx1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-        final ListBox axesBox1 = new ListBox();
-        axesBox1.addItem("X Axis");
-        axesBox1.addItem("Y Axis");
-        axesBox1.addItem("Z Axis");
-
-
-        Label labelAx2 = new Label("Axis 2:");
-        labelAx2.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-        final ListBox axesBox2 = new ListBox();
-        axesBox2.addItem("X Axis");
-        axesBox2.addItem("Y Axis");
-        axesBox2.addItem("Z Axis");
 
         Button genCS = new Button("Enter");
 
@@ -428,9 +420,7 @@ public class GraphicalFunctions {
         genCS.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 int chosen = directionBox.getSelectedIndex();
-                int a1 = axesBox1.getSelectedIndex();
-                int a2 = axesBox2.getSelectedIndex();
-                createCrossSections(chosen,a1,a2, scale);
+                createCrossSections(chosen, scale);
                 dialogCS.hide();
             }
         });
@@ -442,51 +432,43 @@ public class GraphicalFunctions {
         panelCS.add(labelCS);
         panelCS.add(labelDir);
         panelCS.add(directionBox);
-        panelCS.add(labelAx1);
-        panelCS.add(axesBox1);
-        panelCS.add(labelAx2);
-        panelCS.add(axesBox2);
         panelCS.getElement().appendChild(sliderElem);
         panelCS.add(buttonCS);
 
         dialogCS.setWidget(panelCS);
         dialogCS.show();
     }
-
-    public void createCrossSections(int constant, int a1,int a2, int val){
+    //TODO
+    public void createCrossSections(int constant, int val) {
         boolean removeFirst = false;
-        LinkedList<String> axis1 = new LinkedList<>(Arrays.asList(data[a1]));
-        LinkedList<String> axis2 = new LinkedList<>(Arrays.asList(data[a2]));
         LinkedList<String> axisC = new LinkedList<>(Arrays.asList(data[constant]));
         try {//the logic here is that the axes might have titles. this checks for those and removes them
-            Integer.parseInt(axis1.get(0));
-        }
-        catch (NumberFormatException e){
+            Integer.parseInt(axisC.get(0));
+        } catch (NumberFormatException e) {
             removeFirst = true;
         }
-        if (removeFirst){
-            axis1.remove(0);
-            axis2.remove(0);
+        if (removeFirst) {
             axisC.remove(0);
         }
-        int[] axiss1 = new int[axis1.size()];
-        int[] axiss2 = new int[axis2.size()];
-        int[] axissC = new int[axisC.size()];
-        try {
-            for (int i = 0; i < axiss1.length; i++) { //parse axes into ints
-                axiss1[i] = Integer.parseInt(axis1.get(i));
-                axiss2[i] = Integer.parseInt(axis2.get(i));
-                axissC[i] = Integer.parseInt(axisC.get(i));
-            }
+        saveData(data);
         /* Calculate Cross Sections */
-        for(int i = 0; i<axissC.length; i++){
-            axissC[i] = val;
+        try {
+            for (int i = 0; i < axisC.size(); i++) {
+                if (Integer.parseInt(axisC.get(i)) <= val) {
+                    axisC.remove(i);
+                    i--;
+                }
+            }
         }
-        chartGWT.render();
-        }
-        catch (NumberFormatException e){
+        catch(NumberFormatException e){
             createErrorMessage("One or more of the axes is a data set of strings");
         }
+        String[] filteredData = new String[axisC.size()];
+        for (int i=0;i<axisC.size();i++){
+            data[constant][i] = axisC.get(i);
+        }
+        chartGWT.setData(data);
+        chartGWT.render();
     }
 
     public void removeCrossSections(){
@@ -638,6 +620,7 @@ public class GraphicalFunctions {
     }
 
     public void createFunctions(int axis, String functionType, Double value) {
+        saveData(data);
         for (int i=0;i<data[axis].length;i++){
             try {
                 if (functionType.equals("Add a Number to Axis")) {
@@ -675,6 +658,23 @@ public class GraphicalFunctions {
             Text correlationText = Document.get().createTextNode("Correlation: "+ Double.toString(correlation));
             correlationDiv.appendChild(correlationText);
         }
+    }
+
+    public void saveData(String[][] tempData){
+        for (int i=0;i<tempData.length;i++){
+            for (int j=0;j<tempData[i].length;j++) {
+                dataSave[i][j] = tempData[i][j];
+            }
+        }
+    }
+
+    public void undo(){
+        for (int i=0;i<dataSave.length;i++){
+            for (int j=0;j<dataSave[i].length;j++) {
+                data[i][j] = dataSave[i][j];
+            }
+        }
+        chartGWT.setData(data);
     }
 
     public void createErrorMessage(String message){

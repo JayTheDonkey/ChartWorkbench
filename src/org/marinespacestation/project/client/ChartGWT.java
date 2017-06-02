@@ -51,6 +51,7 @@ public static final String kGRAPHICAL_FUNCTIONS         = "Functions";
 public static final String kGRAPHICAL_TRANSFORMATIONS   = "Transformations";
 public static final String kGRAPHICAL_BESTFIT           = "Line of Best Fit";
 public static final String kGRAPHICAL_CROSS_SECTIONS    = "Cross Sections";
+public static final String kGRAPHICAL_UNDO              = "Undo";
 
 public static final String kKEY_OPTIONS                 = "options";
 public static final String kKEY_TYPE                    = "type";
@@ -620,6 +621,22 @@ public void graphicalMenuHandler(String mediaPanelId) {
       }
    });
    mediaDropdownMenu.appendChild(graphicalItemTransformations);
+
+                                       //---------------Undo-----------------------//
+   Element graphicalItemUndo = Document.get().createLIElement();
+   graphicalItemUndo.setId("graphicalItemUndo");
+   Element graphicalItemUndoAnchor = Document.get().createAnchorElement();
+   graphicalItemUndoAnchor.setInnerText("Undo");
+   graphicalItemUndo.appendChild(graphicalItemUndoAnchor);
+   Event.sinkEvents(graphicalItemUndo, Event.ONCLICK);
+   DOM.setEventListener(graphicalItemUndo, new EventListener() {
+      public void onBrowserEvent(Event event) {
+         if (event.getType().equalsIgnoreCase("click")) {
+            graphicalFunctions(kGRAPHICAL_UNDO);
+         }
+      }
+   });
+   mediaDropdownMenu.appendChild(graphicalItemUndo);
 }
 /*------------------------------------------------------------------------------
 
@@ -689,6 +706,10 @@ public void graphicalFunctions(String option) {
    }
    else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {//if selected while active, should be able to remove previous entries
       functions.createTransformationsHandler();
+      changed = true;
+   }
+   else if (option.equals(kGRAPHICAL_UNDO)){
+      functions.undo();
       changed = true;
    }
    if (changed){
