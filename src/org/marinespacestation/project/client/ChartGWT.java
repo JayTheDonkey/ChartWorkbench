@@ -899,17 +899,18 @@ protected static native void draw2DChartNative(
 
         var data         = new $wnd.google.visualization.arrayToDataTable(newArray);
 
-        if (arrayData[0].length > 2) {
-
-            data.addColumn({type:"string",role:"tooltip"});
-
-            for (var r = 0; r < rawArray.length; r++) {
-                var tempTooltip = "";
-                for (var g = 0; g < rawArray[0].length; g++) {
-                    tempTooltip = tempTooltip + rawArray[r][g] + ", ";
-                }
-                data.setCell(r, newArray[0].length, tempTooltip.substring(0, tempTooltip.length - 2));
+        var tempTooltip;
+        for (var r = 0; r < rawArray.length; r++) {
+            tempTooltip = "";
+            for (var g = 0; g < rawArray[0].length; g++) {
+                tempTooltip = tempTooltip + rawArray[r][g] + ", ";
             }
+            data.insertColumn(r * 2 + 2, "string", null);
+            data.setValue(r, r * 2 + 2, tempTooltip.substring(0, tempTooltip.length - 2));
+            data.setColumnProperty(r * 2 + 2, "role", "tooltip");
+        }
+
+        if (arrayData[0].length > 2) {
 
             var thirdDim = new Array(arrayData.length);
             var tempArray = new Array(arrayData.length);
