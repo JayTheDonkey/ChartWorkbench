@@ -457,7 +457,7 @@ public class GraphicalFunctions {
         ArrayList<ArrayList<String>> filteredData = new ArrayList<>();
         //init filteredData
         for (String[] axes: data){
-            filteredData.add(new ArrayList<>());
+            filteredData.add(new ArrayList<String>());
         }
         for (int i=0;i<data[constant].length;i++){
             try {
