@@ -48,8 +48,6 @@ public static final String kCHART_GRAPHICAL_CHART       = "GraphicalChart";
 
 public static final String kGRAPHICAL_CORRELATION       = "Correlation";
 public static final String kGRAPHICAL_FUNCTIONS         = "Functions";
-public static final String kGRAPHICAL_TRANSFORMATIONS   = "Transformations";
-public static final String kGRAPHICAL_BESTFIT           = "Line of Best Fit";
 public static final String kGRAPHICAL_CROSS_SECTIONS    = "Cross Sections";
 public static final String kGRAPHICAL_UNDO              = "Undo";
 
@@ -588,40 +586,6 @@ public void graphicalMenuHandler(String mediaPanelId) {
    });
    mediaDropdownMenu.appendChild(graphicalItemFunctions);
 
-                                       //------------Line of Best Fit--------------//
-   Element graphicalItemBestFit = Document.get().createLIElement();
-   graphicalItemBestFit.setId("graphicalItemBestFit");
-   Element graphicalItemBestFitAnchor = Document.get().createAnchorElement();
-   graphicalItemBestFitAnchor.setInnerText("Line of Best Fit");
-   graphicalItemBestFit.appendChild(graphicalItemBestFitAnchor);
-   Event.sinkEvents(graphicalItemBestFit, Event.ONCLICK);
-   DOM.setEventListener(graphicalItemBestFit, new EventListener() {
-      public void onBrowserEvent(Event event) {
-
-         if (event.getType().equalsIgnoreCase("click")) {
-            graphicalFunctions(kGRAPHICAL_BESTFIT);
-         }
-      }
-   });
-   mediaDropdownMenu.appendChild(graphicalItemBestFit);
-
-                                       //------------Transformations---------------//
-   Element graphicalItemTransformations = Document.get().createLIElement();
-   graphicalItemTransformations.setId("graphicalItemTransformations");
-   Element graphicalItemTransformationsAnchor = Document.get().createAnchorElement();
-   graphicalItemTransformationsAnchor.setInnerText("Transformations");
-   graphicalItemTransformations.appendChild(graphicalItemTransformationsAnchor);
-   Event.sinkEvents(graphicalItemTransformations, Event.ONCLICK);
-   DOM.setEventListener(graphicalItemTransformations, new EventListener() {
-      public void onBrowserEvent(Event event) {
-
-         if (event.getType().equalsIgnoreCase("click")) {
-            graphicalFunctions(kGRAPHICAL_TRANSFORMATIONS);
-         }
-      }
-   });
-   mediaDropdownMenu.appendChild(graphicalItemTransformations);
-
                                        //---------------Undo-----------------------//
    Element graphicalItemUndo = Document.get().createLIElement();
    graphicalItemUndo.setId("graphicalItemUndo");
@@ -675,16 +639,7 @@ public void graphicalFunctions(String option) {
 
    boolean changed = false;
 
-   if (option.equals(kGRAPHICAL_BESTFIT)) {//if selected while active, should turn off
-      if (functions.bestFitActive){
-         functions.removeLineOfBestFit();
-      }
-      else {
-         functions.createLineOfBestFitDialog();
-      }
-      changed = true;
-   }
-   else if (option.equals(kGRAPHICAL_CORRELATION)) {//if selected while active, should be able to remove previous entries
+   if (option.equals(kGRAPHICAL_CORRELATION)) {//if selected while active, should be able to remove previous entries
       if(functions.correlationActive){
          functions.removeCorrelations();
       }
@@ -692,20 +647,11 @@ public void graphicalFunctions(String option) {
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_CROSS_SECTIONS)) {//if selected while active, should turn off
-      if (functions.crossSectionsActive){
-         functions.removeCrossSections();
-      }
-      else {
-         functions.createCrossSectionHandler();
-      }
+      functions.createCrossSectionHandler();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_FUNCTIONS)) {//if selected while active, should be able to remove previous entries
       functions.createFunctionsDialog();
-      changed = true;
-   }
-   else if (option.equals(kGRAPHICAL_TRANSFORMATIONS)) {//if selected while active, should be able to remove previous entries
-      functions.createTransformationsHandler();
       changed = true;
    }
    else if (option.equals(kGRAPHICAL_UNDO)){

@@ -29,7 +29,7 @@ public class GraphicalFunctions {
 
     public String [][] data, dataSave;
     public String elementID;
-    protected int scale = 50;
+    private static int scale = 50;
 
     public double correlation;
 
@@ -69,6 +69,7 @@ public class GraphicalFunctions {
         dataStr = dataStr.replace("\r", "");//removes windows carriage returns
         dataStr = dataStr.replace("\n",",");
         String[] values = dataStr.split(",");
+        //convert string to arraylist
         ArrayList<ArrayList<String>> dataList = new ArrayList<>();
         for (int i=0;i<cols.length;i++){
             ArrayList<String> axes = new ArrayList<>();
@@ -79,6 +80,7 @@ public class GraphicalFunctions {
             }
             dataList.add(axes);
         }
+        //convert arraylist to array
         String[][] tempData = new String [dataList.size()][];
         for (int i = 0; i < dataList.size(); i++) {
             ArrayList<String> rows = dataList.get(i);
@@ -86,6 +88,7 @@ public class GraphicalFunctions {
         }
         data = tempData;
         dataSave = new String[data.length][data[0].length];
+        //init dataSave
         saveData(data);
         bestFitActive = false;
         crossSectionsActive = false;
@@ -93,10 +96,10 @@ public class GraphicalFunctions {
     }
 /*------------------------------------------------------------------------------
 
-@name       createdLineOfBestFitDialog - creates a dialog for Line of Best Fit creation
+@name       createCorrelationDialog - create the correlations dialog
                                                                               */
     /**
-     creates a DialogBox for the Line of Best Fix creation process
+     Creates the dialog box for the Correlation dialog
 
      @return     void
 
@@ -105,109 +108,6 @@ public class GraphicalFunctions {
      @notes
      */
 //------------------------------------------------------------------------------
-    public void createLineOfBestFitDialog(){
-
-        final DialogBox dialog = new DialogBox(false);
-        dialog.setPopupPosition(400, 300);
-        dialog.setText("Line of Best Fit");
-        dialog.setAnimationEnabled(true);
-        dialog.setGlassEnabled(true);
-
-        Label label = new Label("Choose two axes");
-        Label axis1 = new Label("1st axis:");
-        Label axis2 = new Label("2nd axis:");
-
-        VerticalPanel panel = new VerticalPanel();
-        panel.setStyleName("verticalPanel");
-        panel.setHeight("100");
-        panel.setWidth("300");
-        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        panel.add(label);
-
-        final ListBox axesBox1 = new ListBox();//this should actually have an entry for each axis of the data
-        axesBox1.addItem("X Axis");
-        axesBox1.addItem("Y Axis");
-
-        final ListBox axesBox2 = new ListBox();
-        axesBox2.addItem("X Axis");
-        axesBox2.addItem("Y Axis");
-
-        if (data.length >= 3){
-            axesBox1.addItem("Z Axis");
-            axesBox2.addItem("Z Axis");
-        }
-        if (data.length >= 4){
-            axesBox1.addItem("W Axis");
-            axesBox2.addItem("W Axis");
-        }
-        if (data.length == 5){
-            axesBox1.addItem("V Axis");
-            axesBox2.addItem("V Axis");
-        }
-
-        HorizontalPanel listBoxLayer1 = new HorizontalPanel();
-        listBoxLayer1.setHeight("100");
-        listBoxLayer1.setWidth("300");
-        listBoxLayer1.setStyleName("listBoxPanel");
-        listBoxLayer1.add(axis1);
-        listBoxLayer1.add(axesBox1);
-
-        panel.add(listBoxLayer1);
-
-        HorizontalPanel listBoxLayer2 = new HorizontalPanel();
-        listBoxLayer2.setHeight("100");
-        listBoxLayer2.setWidth("300");
-        listBoxLayer2.setStyleName("listBoxPanel");
-        listBoxLayer2.add(axis2);
-        listBoxLayer2.add(axesBox2);
-
-        panel.add(listBoxLayer2);
-
-        Button ok = new Button("Enter");
-        ok.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                int axis1 = axesBox1.getSelectedIndex();
-                int axis2 = axesBox2.getSelectedIndex();
-                generateLineOfBestFit(axis1, axis2);
-                dialog.hide();
-            }
-        });
-
-        Button cancel = new Button("Cancel");
-        cancel.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                dialog.hide();
-            }
-        });
-
-        HorizontalPanel buttonLayer = new HorizontalPanel();
-        buttonLayer.setHeight("100");
-        buttonLayer.setWidth("300");
-        buttonLayer.addStyleName("buttonPanel");
-        buttonLayer.add(ok);
-        buttonLayer.add(cancel);
-
-        panel.add(buttonLayer);
-
-        dialog.setWidget(panel);
-        dialog.center();
-    }
-
-    public void generateLineOfBestFit(int a, int b){
-        //TODO Chase's program goes here
-        /* how the fuck are we going to display the line
-            Options:
-                1: add a layer on top of the chart
-                    (pros: easy to remove, cons: hard to generate and have it look good)
-                2: modify the data set
-                    (pros: easy to generate and make look good, cons: hard to remove)
-                                                                                        */
-        bestFitActive = true;
-    }
-
-    public void removeLineOfBestFit(){
-        bestFitActive = false;
-    }
 
     public void createCorrelationDialog(){
 
@@ -298,6 +198,20 @@ public class GraphicalFunctions {
         dialog.setWidget(panel);
         dialog.center();
     }
+/*------------------------------------------------------------------------------
+
+@name       calculateCorrelation - Calculate Correlation
+                                                                              */
+    /**
+     Calculates the coefficient of correlation between two axes
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void calculateCorrelation(int a, int b){//both data sets should have same length
         /* Array Formatting */
         boolean removeFirst = false;
@@ -351,15 +265,41 @@ public class GraphicalFunctions {
             createErrorMessage("One or more of the axes is a data set of strings");
         }
     }
+/*------------------------------------------------------------------------------
 
+@name       removeCorrelations - Remove Correlations
+                                                                              */
+    /**
+     Removes the correlation text from the chart layer
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void removeCorrelations(){
         correlationActive = false;
         Document.get().getElementById("correlationDiv").removeFromParent();
     }
+/*------------------------------------------------------------------------------
 
+@name       createCrossSectionHandler - Create Cross Section Handler
+                                                                              */
+    /**
+     Creates a dialog box for the cross section dialog
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void createCrossSectionHandler(){
         final DialogBox dialogCS = new DialogBox(false, true);
-        dialogCS.setPopupPosition(700, 300);
+        dialogCS.setPopupPosition(400, 300);
         dialogCS.setText("Cross Sections");
         dialogCS.setAnimationEnabled(true);
         dialogCS.setGlassEnabled(true);
@@ -439,7 +379,21 @@ public class GraphicalFunctions {
         dialogCS.setWidget(panelCS);
         dialogCS.show();
     }
-    //TODO
+/*------------------------------------------------------------------------------
+
+@name       createCrossSections - Create Cross Sections
+                                                                              */
+    /**
+     Creates cross sections by filtering out points depending on the slider scale
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes  not a typical cross section. This program filters out points with values less than a percentage of the
+             maximum value of the selected axis, which is inputted through the slider
+     */
+//------------------------------------------------------------------------------
     public void createCrossSections(int constant, int scale) {
         //convert val to percentage
         Double val = scale/100.0;
@@ -481,11 +435,20 @@ public class GraphicalFunctions {
         chartGWT.setData(filteredDataArray);
         chartGWT.render();
     }
+/*------------------------------------------------------------------------------
 
-    public void removeCrossSections(){
-        crossSectionsActive = false;
-    }
+@name       createFunctionDialog -CreateFunctionsDialog
+                                                                              */
+    /**
+     Creates the first dialog of the functions dialog
 
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void createFunctionsDialog(){
         final DialogBox dialog = new DialogBox(false);
         dialog.setPopupPosition(400, 300);
@@ -573,7 +536,20 @@ public class GraphicalFunctions {
         dialog.center();
 
     }
+/*------------------------------------------------------------------------------
 
+@name       createSecondaryFunctionDialog - Create Secondary Function Dialog
+                                                                              */
+    /**
+     Creates the second dialog of the functions dialog
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void createSecondaryFunctionDialog(final int axis, final String functionType){
         final DialogBox dialog = new DialogBox(false);
         dialog.setPopupPosition(400, 300);
@@ -629,7 +605,21 @@ public class GraphicalFunctions {
         dialog.setWidget(panel);
         dialog.center();
     }
+/*------------------------------------------------------------------------------
 
+@name       createFuncitons - Create Functions
+                                                                              */
+    /**
+     Modifies each point in the selected axis by an the inputted value
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes      points are multiplied by, increased by, or raised to the value, depending
+                 on the option chosen
+     */
+//------------------------------------------------------------------------------
     public void createFunctions(int axis, String functionType, Double value) {
         saveData(data);
         for (int i=0;i<data[axis].length;i++){
@@ -651,11 +641,20 @@ public class GraphicalFunctions {
         chartGWT.setData(data);
         chartGWT.render();
     }
+/*------------------------------------------------------------------------------
 
-    public void createTransformationsHandler(){
+@name       updateGraphicalElements - Update Graphical Elements
+                                                                              */
+    /**
+     updates the elementID so that elements can stay attached to the root panel
 
-    }
+     @return     void
 
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void updateGraphicalElements(String mediaPanelID){
         elementID = mediaPanelID;
         final Element mediaPanel = Document.get().getElementById(elementID);
@@ -670,7 +669,20 @@ public class GraphicalFunctions {
             correlationDiv.appendChild(correlationText);
         }
     }
+/*------------------------------------------------------------------------------
 
+@name       saveData - Save Data
+                                                                              */
+    /**
+     Saves a copy of the data. Called right before data changes.
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void saveData(String[][] tempData){
         for (int i=0;i<tempData.length;i++){
             for (int j=0;j<tempData[i].length;j++) {
@@ -678,7 +690,20 @@ public class GraphicalFunctions {
             }
         }
     }
+/*------------------------------------------------------------------------------
 
+@name       undo - Undo
+                                                                              */
+    /**
+     Reverts the data back to its most recent save
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes      only most resent previous state is archived
+     */
+//------------------------------------------------------------------------------
     public void undo(){
         for (int i=0;i<dataSave.length;i++){
             for (int j=0;j<dataSave[i].length;j++) {
@@ -687,7 +712,20 @@ public class GraphicalFunctions {
         }
         chartGWT.setData(data);
     }
+/*------------------------------------------------------------------------------
 
+@name       createErrorMessage - Create Error Message
+                                                                              */
+    /**
+     creates an error dialog box in the event of an error
+
+     @return     void
+
+     @history    2017 ish created
+
+     @notes
+     */
+//------------------------------------------------------------------------------
     public void createErrorMessage(String message){
         final DialogBox dialog = new DialogBox(false);
         dialog.setPopupPosition(400, 300);
