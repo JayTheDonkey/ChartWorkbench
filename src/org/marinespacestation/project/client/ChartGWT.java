@@ -920,21 +920,24 @@ protected static native void draw2DChartNative(
             }
             var maxValue = tempArray.sort(function(a, b){return a-b})[thirdDim.length - 1];
             var minValue = tempArray.sort(function(a, b){return a-b})[0];
-            var colorArray = new Array(newArray.length - 1);
-            for (var c = 0; c < colorArray.length; c++) {
-                var colorNum = Math.trunc(((thirdDim[c] - minValue)/(maxValue - minValue))*255);
-                var red = (255 - colorNum).toString(16);
-                if (red.length === 1) {
-                    red = "0" + red;
+
+            if (maxValue > minValue) {
+                var colorArray = new Array(newArray.length - 1);
+                for (var c = 0; c < colorArray.length; c++) {
+                    var colorNum = Math.trunc(((thirdDim[c] - minValue) / (maxValue - minValue)) * 255);
+                    var red = (255 - colorNum).toString(16);
+                    if (red.length === 1) {
+                        red = "0" + red;
+                    }
+                    var green = "00";
+                    var blue = (colorNum).toString(16);
+                    if (blue.length === 1) {
+                        blue = "0" + blue;
+                    }
+                    colorArray[c] = '#' + red + green + blue;
                 }
-                var green = "00";
-                var blue = (colorNum).toString(16);
-                if (blue.length === 1) {
-                    blue = "0" + blue;
-                }
-                colorArray[c] = '#' + red + green + blue;
+                options.colors = colorArray;
             }
-            options.colors = colorArray;
 
             if (arrayData[0].length > 3) {
                 var tempNum;
@@ -947,11 +950,15 @@ protected static native void draw2DChartNative(
                 var max = temp2.sort(function(a, b){return a-b})[fourthDim.length - 1];
                 var min = temp2.sort(function(a, b){return a-b})[0];
                 options.series = {};
+
                 for (var l = 0; l < fourthDim.length; l++) {
-                    tempNum = ((fourthDim[l] - min)/(max - min))*30 + 1;
-                    options["series"][l+""] = {};
-                    options["series"][l+""] = {pointSize: tempNum};
+                    options["series"][l + ""] = {};
+                    if (max > min) {
+                        tempNum = ((fourthDim[l] - min) / (max - min)) * 30 + 1;
+                        options["series"][l + ""] = {pointSize: tempNum};
+                    }
                 }
+
             }
 
             if (arrayData[0].length > 4) {
@@ -964,9 +971,11 @@ protected static native void draw2DChartNative(
                 }
                 var max2 = temp3.sort(function(a, b){return a-b})[fifthDim.length - 1];
                 var min2 = temp3.sort(function(a, b){return a-b})[0];
-                for (var b = 0; b < fifthDim.length; b++) {
-                    tempNum2 = ((fifthDim[b] - min2)/(max2 - min2))*.8 + .1;
-                    options["series"][b+""]["dataOpacity"] = tempNum2;
+                if (max2 > min2) {
+                    for (var b = 0; b < fifthDim.length; b++) {
+                        tempNum2 = ((fifthDim[b] - min2) / (max2 - min2)) * .8 + .1;
+                        options["series"][b + ""]["dataOpacity"] = tempNum2;
+                    }
                 }
             }
         }
