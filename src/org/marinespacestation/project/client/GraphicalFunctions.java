@@ -86,6 +86,7 @@ public class GraphicalFunctions {
         }
         data = tempData;
         dataSave = new String[data.length][data[0].length];
+        saveData(data);
         bestFitActive = false;
         crossSectionsActive = false;
         correlationActive = false;
@@ -396,7 +397,7 @@ public class GraphicalFunctions {
         sliderElem.setPropertyString("type", "range");
         sliderElem.setAttribute("min",  "0");
         sliderElem.setAttribute("max",  "100");
-        sliderElem.setAttribute("step", "10");
+        sliderElem.setAttribute("step", "1");
         sliderElem.setValue(Integer.toString(scale));
 
         Event.sinkEvents(sliderElem, Event.ONCHANGE);
@@ -439,35 +440,45 @@ public class GraphicalFunctions {
         dialogCS.show();
     }
     //TODO
-    public void createCrossSections(int constant, int val) {
-        boolean removeFirst = false;
-        LinkedList<String> axisC = new LinkedList<>(Arrays.asList(data[constant]));
-        try {//the logic here is that the axes might have titles. this checks for those and removes them
-            Integer.parseInt(axisC.get(0));
-        } catch (NumberFormatException e) {
-            removeFirst = true;
-        }
-        if (removeFirst) {
-            axisC.remove(0);
-        }
-        saveData(data);
-        /* Calculate Cross Sections */
-        try {
-            for (int i = 0; i < axisC.size(); i++) {
-                if (Integer.parseInt(axisC.get(i)) <= val) {
-                    axisC.remove(i);
-                    i--;
-                }
+    public void createCrossSections(int constant, int scale) {
+        //convert val to percentage
+        Double val = scale/100.0;
+        /* Calculate max of dataset */
+        double max = 0;
+        for (String str: data[constant]){
+            try{
+                max = Math.max(max, Double.parseDouble(str));
+            }
+            catch (NumberFormatException e){
+                //nothing to see here
             }
         }
-        catch(NumberFormatException e){
-            createErrorMessage("One or more of the axes is a data set of strings");
+        /* Calculate Cross Sections */
+        ArrayList<ArrayList<String>> filteredData = new ArrayList<>();
+        //init filteredData
+        for (String[] axes: data){
+            filteredData.add(new ArrayList<>());
         }
-        String[] filteredData = new String[axisC.size()];
-        for (int i=0;i<axisC.size();i++){
-            data[constant][i] = axisC.get(i);
+        for (int i=0;i<data[constant].length;i++){
+            try {
+                if (Double.parseDouble(data[constant][i]) >= max*val){
+                    for (int j=0;j<data.length;j++){
+                        filteredData.get(j).add(data[j][i]);
+                    }
+                }
+            }
+            catch (NumberFormatException e){
+                //just move along
+            }
         }
-        chartGWT.setData(data);
+        //turn it back into an array
+        String[][] filteredDataArray = new String[data.length][filteredData.get(constant).size()];
+        for (int k=0;k<filteredDataArray.length;k++){
+            for (int l=0;l<filteredDataArray[k].length;l++){
+                filteredDataArray[k][l] = filteredData.get(k).get(l);
+            }
+        }
+        chartGWT.setData(filteredDataArray);
         chartGWT.render();
     }
 
