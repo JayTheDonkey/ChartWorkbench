@@ -856,25 +856,26 @@ protected static native void draw2DChartNative(
             legend: "none"
         };
 
-        //try changing the width and height in options - check out the 3d graph for more info
-
         var arrayData    = $wnd.$.csv.toArrays(chartData, {onParseValue: $wnd.$.csv.hooks.castToScalar});
 
         var rawArray = arrayData;
 
-        //hopefully this fixes the commas
+        // Code to get rid of non-numerical characters and convert blank strings to 0
 
         if (arrayData[0].length > 0) {
-                for (var num = 0; num < arrayData.length; num++) {
-                    for (var index = 0; index < arrayData[0].length; index++) {
-                        if (arrayData[num][index] === arrayData[num][index].toString()) {
-                            var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
-                            strHolder = "0" + strHolder;
-                            arrayData[num][index] = parseInt(strHolder);
-                        }
+            for (var num = 0; num < arrayData.length; num++) {
+                for (var index = 0; index < arrayData[0].length; index++) {
+                    if (arrayData[num][index] === arrayData[num][index].toString()) {
+                        var strHolder = arrayData[num][index].replace(/[^\d.-]/g, '');
+                        strHolder = "0" + strHolder;
+                        arrayData[num][index] = parseInt(strHolder);
                     }
                 }
+            }
         }
+
+        // Takes arrayData and spaces out the y values so each point has its own column
+        // This allows Google Charts to apply options to each point individually
 
         var newArray = new Array(arrayData.length + 1);
         for (var i = 0; i < newArray.length; i++) {
@@ -897,7 +898,12 @@ protected static native void draw2DChartNative(
             }
         }
 
+        // Converts newArray to a DataTable (duh)
+
         var data         = new $wnd.google.visualization.arrayToDataTable(newArray);
+
+        // Adds a column after every y-value that has the tooltip role
+        // Allows every point to have a mouseover displaying each dimension, not just 1st & 2nd
 
         var tempTooltip;
         for (var r = 0; r < rawArray.length; r++) {
@@ -912,6 +918,8 @@ protected static native void draw2DChartNative(
 
         if (arrayData[0].length > 2) {
 
+            // Applies the third dimension as a variation of color from red to blue
+
             var thirdDim = new Array(arrayData.length);
             var tempArray = new Array(arrayData.length);
             for (var t = 0; t < thirdDim.length; t++) {
@@ -920,7 +928,6 @@ protected static native void draw2DChartNative(
             }
             var maxValue = tempArray.sort(function(a, b){return a-b})[thirdDim.length - 1];
             var minValue = tempArray.sort(function(a, b){return a-b})[0];
-
             if (maxValue > minValue) {
                 var colorArray = new Array(newArray.length - 1);
                 for (var c = 0; c < colorArray.length; c++) {
@@ -939,6 +946,8 @@ protected static native void draw2DChartNative(
                 options.colors = colorArray;
             }
 
+            // Applies fourth dimension as a variation of point size
+
             if (arrayData[0].length > 3) {
                 var tempNum;
                 var fourthDim = new Array(arrayData.length);
@@ -950,7 +959,6 @@ protected static native void draw2DChartNative(
                 var max = temp2.sort(function(a, b){return a-b})[fourthDim.length - 1];
                 var min = temp2.sort(function(a, b){return a-b})[0];
                 options.series = {};
-
                 for (var l = 0; l < fourthDim.length; l++) {
                     options["series"][l + ""] = {};
                     if (max > min) {
@@ -958,8 +966,9 @@ protected static native void draw2DChartNative(
                         options["series"][l + ""] = {pointSize: tempNum};
                     }
                 }
-
             }
+
+            // Applies a fifth dimension as a variation of opacity
 
             if (arrayData[0].length > 4) {
                 var tempNum2;
